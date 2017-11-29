@@ -5,18 +5,21 @@ class DailyMealPlan(models.Model):
 	# Fields
 	meal_plan_id = models.IntegerField(primary_key=True)
 	date = models.DateField()
-	meal1 = models.IntegerField()
-	meal2 = models.IntegerField()
-	meal3 = models.IntegerField()
+	meal1 = models.ForeignKey('Recipe', related_name="meal1", on_delete=models.CASCADE)
+	meal2 = models.ForeignKey('Recipe', related_name="meal2", on_delete=models.CASCADE)
+	meal3 = models.ForeignKey('Recipe', related_name="meal3", on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.meal_plan_id
+
+	def mealNutrition():
+		return []
 
 # Represents an ingrendient in a recipe
 class Ingredient(models.Model):
 	# Fields
 	ing_id = models.IntegerField(primary_key=True)
-	ing_name = models.CharField(max_length=50)
+	ing_name = models.CharField(max_length=60)
 
 	def __str__(self):
 		return self.ing_name
@@ -25,7 +28,7 @@ class Ingredient(models.Model):
 class Tag(models.Model):
 	# Fields
 	tag_id = models.IntegerField(primary_key=True)
-	tag_name = models.CharField(max_length=50)
+	tag_name = models.CharField(max_length=30)
 
 	def __str__(self):
 		return self.tag_name
@@ -48,21 +51,21 @@ class Recipe(models.Model):
 	def __str__(self):
 		return self.recipe_name
 
+	def addNew(details):
+		return False
+
 # Represents an instruction for a recipe
 class Instruction(models.Model):
 	# Fields
 	instruct_id = models.IntegerField(primary_key=True)
 	step_num = models.IntegerField()
-	instruction = models.CharField(max_length=50)
+	instruction = models.CharField(max_length=100)
 	
 	# Foreign key
-	recipe_id = models.ForeignKey(
-        'Recipe',
-        on_delete=models.CASCADE,
-    )
+	recipe_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
 
 	def __str__(self):
-		return self.instruction
+		return self.instruct_id
 
 
 
