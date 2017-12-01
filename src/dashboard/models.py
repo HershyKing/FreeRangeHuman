@@ -1,9 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Represents the meals selected for a certain day
 class DailyMealPlan(models.Model):
 	# Fields
-	meal_plan_id = models.IntegerField(primary_key=True)
+	meal_plan_id = models.AutoField(primary_key=True)
 	date = models.DateField()
 	meal1 = models.ForeignKey('Recipe', related_name="meal1", on_delete=models.CASCADE)
 	meal2 = models.ForeignKey('Recipe', related_name="meal2", on_delete=models.CASCADE)
@@ -18,8 +21,9 @@ class DailyMealPlan(models.Model):
 # Represents an ingrendient in a recipe
 class Ingredient(models.Model):
 	# Fields
-	ing_id = models.IntegerField(primary_key=True)
+	ing_id = models.AutoField(primary_key=True)
 	ing_name = models.CharField(max_length=60)
+	ing_num = models.IntegerField()
 
 	def __str__(self):
 		return self.ing_name
@@ -27,7 +31,7 @@ class Ingredient(models.Model):
 # Repesents a tag of a recipe
 class Tag(models.Model):
 	# Fields
-	tag_id = models.IntegerField(primary_key=True)
+	tag_id = models.AutoField(primary_key=True)
 	tag_name = models.CharField(max_length=30)
 
 	def __str__(self):
@@ -36,7 +40,7 @@ class Tag(models.Model):
 # Represents a single recipe for a meal
 class Recipe(models.Model):
 	# Fields
-	recipe_id = models.IntegerField(primary_key=True)
+	recipe_id = models.AutoField(primary_key=True)
 	recipe_name = models.CharField(max_length=50)
 	calories = models.IntegerField()
 	servings = models.IntegerField()
@@ -57,7 +61,7 @@ class Recipe(models.Model):
 # Represents an instruction for a recipe
 class Instruction(models.Model):
 	# Fields
-	instruct_id = models.IntegerField(primary_key=True)
+	instruct_id = models.AutoField(primary_key=True)
 	step_num = models.IntegerField()
 	instruction = models.CharField(max_length=100)
 	
@@ -68,4 +72,25 @@ class Instruction(models.Model):
 		return self.instruct_id
 
 
+class Preferences(models.Model):
+	#Fields
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	tags = models.ManyToManyField(Tag)
+	ingredients = models.ManyToManyField(Ingredient)
+	CalorieGoal = models.IntegerField()
+	fatGoal = models.IntegerField()
+	carbGoal = models.IntegerField()
+	proteinGoal = models.IntegerField()
 
+@receiver
+def create_user_preferences(sender, instance, created, **kwargs):
+	if created:
+		Preferences.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_Preferences(sender, instance, **kwargs):
+	instance.Preferences.save()
+
+#class GroceryList(models.Model):
+
+#class Pantry(models.Model):

@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>Meal Plan Home</h1>
+
+  <p>Welcome to <em>FreeRangeHuman</em>, BE FREE HUMANS. THE EARTH IS FLAT.</p>
+
+<h2>Dynamic content</h2>
+
+  <p>The kitchen has the following counts:</p>
+  <ul>
+    <li><strong>TAGS:</strong> {{ num_tags }}</li>
+    <li><strong>INGREDIENTS:</strong> {{ num_ing }}</li>
+  </ul>
+
+{% endblock %}
