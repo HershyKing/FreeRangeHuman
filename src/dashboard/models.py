@@ -1,5 +1,8 @@
 from django.db import models
 
+# Contains models for
+# DailMealPlan Ingredient Tag Recipe Instruction
+
 # Represents the meals selected for a certain day
 class DailyMealPlan(models.Model):
 	# Fields
