@@ -2,7 +2,11 @@ from django.conf.urls import url
 from django.contrib import admin
 from dashboard import views
 
+
+
 urlpatterns = [
-	url(r'^$', views.index, name='index'),
+	# url(r'^$', views.DashView.as_view(), name='index'),
 	url(r'tags', views.TagListView.as_view(), name='tags'),
+	url(r'ingredients', views.IngredientListView.as_view(), name='ingredients'),
+	url(r'^$', views.index, name='index'),
 ]

@@ -72,24 +72,27 @@ class Instruction(models.Model):
 		return self.instruct_id
 
 
-class Preferences(models.Model):
-	#Fields
-	user = models.OneToOneField(User, on_delete=models.CASCADE)
-	tags = models.ManyToManyField(Tag)
-	ingredients = models.ManyToManyField(Ingredient)
-	CalorieGoal = models.IntegerField()
-	fatGoal = models.IntegerField()
-	carbGoal = models.IntegerField()
-	proteinGoal = models.IntegerField()
 
-@receiver
-def create_user_preferences(sender, instance, created, **kwargs):
-	if created:
-		Preferences.objects.create(user=instance)
+# Take out preferences for now to allow admin page to work
 
-@receiver(post_save, sender=User)
-def save_user_Preferences(sender, instance, **kwargs):
-	instance.Preferences.save()
+# class Preferences(models.Model):
+# 	#Fields
+# 	user = models.OneToOneField(User, on_delete=models.CASCADE)
+# 	tags = models.ManyToManyField(Tag)
+# 	ingredients = models.ManyToManyField(Ingredient)
+# 	CalorieGoal = models.IntegerField()
+# 	fatGoal = models.IntegerField()
+# 	carbGoal = models.IntegerField()
+# 	proteinGoal = models.IntegerField()
+
+# @receiver
+# def create_user_preferences(sender, instance, created, **kwargs):
+# 	if created:
+# 		Preferences.objects.create(user=instance)
+
+# @receiver(post_save, sender=User)
+# def save_user_Preferences(sender, instance, **kwargs):
+# 	instance.Preferences.save()
 
 #class GroceryList(models.Model):
 
