@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Tag, Ingredient
+from .models import Tag, Ingredient, Recipe
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, authenticate
@@ -19,6 +19,10 @@ class TagListView(LoginRequiredMixin, generic.ListView):
 
 class IngredientListView(LoginRequiredMixin, generic.ListView):
 	model = Ingredient	
+
+def RecipeView(request):
+    recipe = Recipe.objects.only('recipe_name')
+    return render(request, 'recipes.html', {'recipes': recipes})
 
 def url_redirect(request):
     return HttpResponsePermanentRedirect("/dashboard")

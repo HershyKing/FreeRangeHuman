@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.urls import resolve
 from django.test import TestCase
-from dashboard.views import index, signup, update_preferences, TagListView, IngredientListView
+from dashboard.views import index, signup, update_preferences, TagListView, IngredientListView, RecipeView
 from django.test import Client
 from dashboard.forms import *   # import all forms
 
@@ -63,6 +63,11 @@ class HomeTests(TestCase):
 		ingredient_url = reverse('ingredients')
 		self.assertContains(self.response, 'href="{0}"'.format(ingredient_url))
 
+	def test_home_view_contains_link_to_recipes_page(self):
+		recipe_url = reverse('recipes')
+		self.assertContains(self.response, 'href="{0}"'.format(recipe_url))
+
+	#These links for the url redirect to dashboard right after so need to explciitly define that behavior
 	def test_home_view_contains_link_to_login_page(self):
 		login_url = reverse('login')
 		self.assertContains(self.response, 'href="{0}"'.format(login_url+"?next=/dashboard/"))
@@ -82,3 +87,15 @@ class SignUpTest(TestCase):
 	def test_index_url_resolves_index_view(self):
 		view = resolve('/dashboard/signup/')
 		self.assertEquals(view.func, signup)
+
+class RecipeTest(TestCase):
+	def setUp(self):
+		url = reverse('recipes')
+		self.response = self.client.get(url)
+
+	def test_recipe_view_status_code(self):
+		self.assertEquals(self.response.status_code, 200)
+
+	def test_recipe_url_resolves_recipe_view(self):
+		view = resolve('/dashboard/')
+		self.assertEquals(view.func, recipes)

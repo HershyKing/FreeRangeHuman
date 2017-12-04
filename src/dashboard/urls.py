@@ -8,5 +8,6 @@ urlpatterns = [
 	url(r'ingredients', views.IngredientListView.as_view(), name='ingredients'),
 	url(r'^$', views.index, name='index'),
 	url(r'^signup/$', views.signup, name='signup'),
-	url(r'^preferences/$', views.update_preferences, name='preferences')
+	url(r'^preferences/$', views.update_preferences, name='preferences'),
+	url(r'recipes', views.RecipeView, name='recipes')
 ]
