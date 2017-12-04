@@ -8,7 +8,9 @@ from dashboard.forms import *   # import all forms
 class SetUp_Class(TestCase):
 
 	def setUp(self):
-		self.user = User.objects.create(username="test_user", password="abcde12345")
+		self.user = User.objects.create(username='test_user')
+		self.user.set_password('abcde12345')
+		self.user.save()
 
 class ValidForm_Test(TestCase):
 
@@ -33,7 +35,8 @@ class User_Views_Test(SetUp_Class):
         user_login = self.client.login(username="test_user", password="abcde12345")
         self.assertTrue(user_login)
         response = self.client.get("/")
-        self.assertEqual(response.status_code, 302)
+        #301 because permanently set dashboard to root url redirection
+        self.assertEqual(response.status_code, 301)
 
 class HomeTests(TestCase):
 
