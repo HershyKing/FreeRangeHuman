@@ -5,10 +5,10 @@ from dashboard.views import index, signup, update_preferences, TagListView, Ingr
 from django.test import Client
 from dashboard.forms import *   # import all forms
 
-# class Setup_Class(TestCase):
+class SetUp_Class(TestCase):
 
-    # def setUp(self):
-    #     self.user = User.objects.create(username="test_user", password1="password", password2='password')
+	def setUp(self):
+		self.user = User.objects.create(username="test_user", password="abcde12345")
 
 class ValidForm_Test(TestCase):
 
@@ -27,6 +27,13 @@ class ValidForm_Test(TestCase):
 			'tags': "", 'ingredients': ""})
 		self.assertTrue(form.is_valid())
 
+class User_Views_Test(SetUp_Class):
+
+    def test_home_view(self):
+        user_login = self.client.login(username="test_user", password="abcde12345")
+        self.assertTrue(user_login)
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 302)
 
 class HomeTests(TestCase):
 
