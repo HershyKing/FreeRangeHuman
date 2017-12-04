@@ -9,5 +9,6 @@ urlpatterns = [
 	url(r'^$', views.index, name='index'),
 	url(r'^signup/$', views.signup, name='signup'),
 	url(r'^preferences/$', views.update_preferences, name='preferences'),
-	url(r'recipes', views.RecipeView, name='recipes')
+	url(r'recipes', views.RecipeView, name='recipes'),
+	url(r'^recipe/(?P<pk>\d+)/$', views.recipe, name='recipe'),
 ]

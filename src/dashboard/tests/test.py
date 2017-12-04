@@ -1,9 +1,10 @@
 from django.core.urlresolvers import reverse
 from django.urls import resolve
 from django.test import TestCase
-from dashboard.views import index, signup, update_preferences, TagListView, IngredientListView, RecipeView
+from dashboard.views import index, signup, update_preferences, TagListView, IngredientListView, RecipeView, recipe
 from django.test import Client
 from dashboard.forms import *   # import all forms
+from dashboard.models import Recipe, Tag, Ingredient
 
 class SetUp_Class(TestCase):
 
@@ -88,7 +89,7 @@ class SignUpTest(TestCase):
 		view = resolve('/dashboard/signup/')
 		self.assertEquals(view.func, signup)
 
-class RecipeTest(TestCase):
+class RecipesTest(TestCase):
 	def setUp(self):
 		url = reverse('recipes')
 		self.response = self.client.get(url)
@@ -99,3 +100,30 @@ class RecipeTest(TestCase):
 	def test_recipe_url_resolves_recipe_view(self):
 		view = resolve('/dashboard/recipes')
 		self.assertEquals(view.func, RecipeView)
+
+class RecipeTests(TestCase):
+	def setUp(self):
+		tag = Tag.objects.create(tag_name="Vegan")
+		tag.save()
+		ing = Ingredient.objects.create(ing_name="Carrot", ing_num=1)
+		ing.save()
+		recipe = Recipe.objects.create(recipe_id=1, recipe_name='Django', calories=50, servings=2, fat=8, carb=7, protein=9)
+		recipe.save()
+		recipe.tags.add(tag)
+		recipe.ingredients.add(ing)
+		recipe.save()
+
+
+	def test_board_topics_view_success_status_code(self):
+		url = reverse('recipe', kwargs={'pk': 1})
+		response = self.client.get(url)
+		self.assertEquals(response.status_code, 200)
+
+	def test_board_topics_view_not_found_status_code(self):
+		url = reverse('recipe', kwargs={'pk': 99})
+		response = self.client.get(url)
+		self.assertEquals(response.status_code, 404)
+
+	def test_board_topics_url_resolves_board_topics_view(self):
+		view = resolve('/recipe/1/')
+		self.assertEquals(view.func, recipe)

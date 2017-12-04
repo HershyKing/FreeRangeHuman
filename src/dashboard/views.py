@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Tag, Ingredient, Recipe
 from django.views import generic
@@ -13,6 +13,7 @@ from django.contrib import messages
 from django.http import HttpResponsePermanentRedirect
 
 
+
 # Create your views here.
 class TagListView(LoginRequiredMixin, generic.ListView):
 	model = Tag
@@ -20,12 +21,17 @@ class TagListView(LoginRequiredMixin, generic.ListView):
 class IngredientListView(LoginRequiredMixin, generic.ListView):
 	model = Ingredient	
 
+@login_required
 def RecipeView(request):
-    recipes = Recipe.objects.only('recipe_name')
+    recipes = Recipe.objects.all()
     return render(request, 'recipes.html', {'recipes': recipes})
 
 def url_redirect(request):
     return HttpResponsePermanentRedirect("/dashboard")
+
+def recipe(request, pk):
+    recipe = get_object_or_404(Recipe, pk=pk)
+    return render(request, 'recipe.html', {'recipe': recipe})
 
 # class DashView(LoginRequiredMixin, generic.ListView):
 # 	# Count of tags and ingredients
