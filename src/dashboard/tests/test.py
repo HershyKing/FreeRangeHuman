@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.urls import resolve
 from django.test import TestCase
-#from dashboard.views import index, signup, update_preferences, TagListView, IngredientListView
+from dashboard.views import index, signup, update_preferences, TagListView, IngredientListView
 
 class HomeTests(TestCase):
 
