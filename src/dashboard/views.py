@@ -21,7 +21,7 @@ class IngredientListView(LoginRequiredMixin, generic.ListView):
 	model = Ingredient	
 
 def RecipeView(request):
-    recipe = Recipe.objects.only('recipe_name')
+    recipes = Recipe.objects.only('recipe_name')
     return render(request, 'recipes.html', {'recipes': recipes})
 
 def url_redirect(request):

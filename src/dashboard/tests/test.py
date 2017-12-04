@@ -97,5 +97,5 @@ class RecipeTest(TestCase):
 		self.assertEquals(self.response.status_code, 200)
 
 	def test_recipe_url_resolves_recipe_view(self):
-		view = resolve('/dashboard/')
-		self.assertEquals(view.func, recipes)
+		view = resolve('/dashboard/recipes')
+		self.assertEquals(view.func, RecipeView)
