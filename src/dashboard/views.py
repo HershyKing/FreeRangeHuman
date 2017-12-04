@@ -36,3 +36,9 @@ def index(request):
 		request,
 		'index.html',
 		context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits})
+
+def signup(request):
+	return(request)
+
+def update_preferences(request):
+	return(request)
