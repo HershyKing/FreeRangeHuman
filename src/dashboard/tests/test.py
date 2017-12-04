@@ -5,16 +5,17 @@ from dashboard.views import index, signup, update_preferences, TagListView, Ingr
 from django.test import Client
 from dashboard.forms import *   # import all forms
 
-class Setup_Class(TestCase):
+# class Setup_Class(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create(username="test_user", password1="password", password2='password')
+    # def setUp(self):
+    #     self.user = User.objects.create(username="test_user", password1="password", password2='password')
 
 class ValidForm_Test(TestCase):
 
 		# Valid Form Data
 	def test_SignUp_valid(self):
-		form = SignUpForm(data={'username': "testuser", 'password1': "password", 'password2': "password"})
+		form = SignUpForm(data={'username': "test", 'password1': "abcde12345", 'password2': "abcde12345",
+			 'calorie_Goal': "", 'fat_Goal': "", 'carb_Goal' : "", 'protein_Goal': "", 'tags': "", 'ingredients': "", })
 		self.assertTrue(form.is_valid())
 
 	def test_UserForm_valid(self):

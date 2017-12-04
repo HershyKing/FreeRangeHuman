@@ -16,7 +16,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'calorie_Goal', 'fat_Goal', 'carb_Goal', 'protein_Goal', 'tags', 'ingredients', 'password1', 'password2', )
+        fields = ('username', 'calorie_Goal', 'fat_Goal', 'carb_Goal', 'protein_Goal', 'tags', 'ingredients', 'password1', 'password2')
 
 class UserForm(forms.ModelForm):
     class Meta:
