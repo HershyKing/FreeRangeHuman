@@ -70,7 +70,8 @@ class Instruction(models.Model):
 
 	def __str__(self):
 		return self.instruct_id
-
+		
+#Extend user class by using a one to one relation between the two
 class Preferences(models.Model):
 	#Fields
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -81,6 +82,7 @@ class Preferences(models.Model):
 	tags = models.ManyToManyField(Tag, blank=True)
 	ingredients = models.ManyToManyField(Ingredient, blank=True)
 
+#After call to save function of user then check if need to save preferences by updating or creating a new object
 @receiver(post_save, sender=User)
 def create_user_Preferences(sender, instance, created, **kwargs):
     if created:

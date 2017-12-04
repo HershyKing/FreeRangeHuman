@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .models import Tag, Ingredient
 from .models import Preferences
 
+#doesn't require all these fields except the user field
 class SignUpForm(UserCreationForm):
     calorie_Goal = forms.IntegerField(required=False, help_text='Optional. In KCals.')
     fat_Goal = forms.IntegerField(required=False, help_text='Optional. In g.')

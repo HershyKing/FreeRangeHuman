@@ -34,6 +34,10 @@ def url_redirect(request):
 
 # 	render(	request,'index.html',context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits})
 
+#If clicked signup, else hits first and opens the SignUpForm, when they fill it out via Post then save, clean and scrape preference attributes
+#Then resaves the user
+#Login after signing_up
+#Redirects to the main dashboard index page
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -55,6 +59,10 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
+#When logged in, only one person per account could update preferences
+#Opens userform and preferences in sequence as different forms, but still renderd by the page
+#Cehcks that both forms were returned filled out valid and then saves the user settings and preferences
+#Redirects to dashboard home page 
 @login_required
 @transaction.atomic
 def update_preferences(request):
