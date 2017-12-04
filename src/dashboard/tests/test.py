@@ -10,13 +10,17 @@ class Setup_Class(TestCase):
     def setUp(self):
         self.user = User.objects.create(username="test_user", password1="password", password2='password')
 
-class SignUpForm_Test(TestCase):
+class ValidForm_Test(TestCase):
 
-    # Valid Form Data
-    def test_SignUp_valid(self):
-        form = SignUpForm(data={'username': "test_user", 'calorie_Goal': "", 'fat_Goal': "", 'carb_Goal' : "",
-         'protein_Goal': "", 'tags': "", 'ingredients': "", 'password1': "password", 'password2': "password"})
-        self.assertTrue(form.is_valid())
+		# Valid Form Data
+	def test_SignUp_valid(self):
+		form = SignUpForm(data={'username': "test_user", 'calorie_Goal': "", 'fat_Goal': "", 'carb_Goal' : "",
+		 'protein_Goal': "", 'tags': "", 'ingredients': "", 'password1': "password", 'password2': "password"})
+		self.assertTrue(form.is_valid())
+
+	def test_UserForm_valid(self):
+		form = UserForm(data={'email': "user@@fake.com", 'last_name': "test", 'first_name': "user"})
+		self.assertTrue(form.is_valid())
 
 
 class HomeTests(TestCase):
