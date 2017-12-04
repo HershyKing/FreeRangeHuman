@@ -22,7 +22,7 @@ class ValidForm_Test(TestCase):
 		self.assertTrue(form.is_valid())
 
 	def test_PreferencesForm_valid(self):
-		form = PreferencesForm(data={'calorie_Goal': "ten", "fat_Goal": "", "carb_Goal": "", 'protein_Goal': "", 
+		form = PreferencesForm(data={'calorie_Goal': "", "fat_Goal": "", "carb_Goal": "", 'protein_Goal': "", 
 			'tags': "", 'ingredients': ""})
 		self.assertTrue(form.is_valid())
 
