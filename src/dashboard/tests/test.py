@@ -19,7 +19,7 @@ class ValidForm_Test(TestCase):
 		self.assertTrue(form.is_valid())
 
 	def test_UserForm_valid(self):
-		form = UserForm(data={'email': "user@@fake.com", 'last_name': "test", 'first_name': "user"})
+		form = UserForm(data={'email': "user@fake.com", 'last_name': "test", 'first_name': "user"})
 		self.assertTrue(form.is_valid())
 
 
