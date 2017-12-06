@@ -5,7 +5,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm, UserForm, PreferencesForm
+from .forms import SignUpForm, UserForm, PreferencesForm, RecipeForm
 from .models import Preferences
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
@@ -92,6 +92,22 @@ def update_preferences(request):
     return render(request, 'preferences.html', context={
         'user_form': user_form,
         'Preferences_form': Preferences_form
+    })
+
+@login_required
+def add_recipe(request):
+    if request.method == 'POST':
+        recipe_form = RecipeForm(request.POST)
+        if recipe_form.is_valid() and recipe_form.is_valid():
+            recipe_form.save()
+            messages.success(request, 'Your recipe was successfully updated!')
+            return redirect('../../dashboard')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        recipe_form = RecipeForm(request.POST)
+    return render(request, 'recipe_form.html', context={
+        'recipe_form': recipe_form,
     })
 
 def index(request):
