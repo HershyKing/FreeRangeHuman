@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.conf import settings
 
 # Represents the meals selected for a certain day
 class DailyMealPlan(models.Model):
@@ -13,7 +14,7 @@ class DailyMealPlan(models.Model):
 	meal3 = models.ForeignKey('Recipe', related_name="meal3", on_delete=models.CASCADE)
 
 	def __str__(self):
-		return self.meal_plan_id
+		return str(self.date)
 
 	def mealNutrition():
 		return []
@@ -69,7 +70,7 @@ class Instruction(models.Model):
 	recipe_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)
 
 	def __str__(self):
-		return self.instruct_id
+		return str(self.instruct_id)
 		
 #Extend user class by using a one to one relation between the two
 class Preferences(models.Model):
@@ -82,6 +83,14 @@ class Preferences(models.Model):
 	tags = models.ManyToManyField(Tag, blank=True)
 	ingredients = models.ManyToManyField(Ingredient, blank=True)
 
+	def __str__(self):
+		return str(self.user.id)
+
+# @receiver(post_save, sender=DailyMealPlan)
+# def createCalendar(sender, instance, created, **kwargs):
+# 	if created:
+# 		Calendar.objects.create(user=instance)
+
 #After call to save function of user then check if need to save preferences by updating or creating a new object
 @receiver(post_save, sender=User)
 def create_user_Preferences(sender, instance, created, **kwargs):
@@ -91,6 +100,14 @@ def create_user_Preferences(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_Preferences(sender, instance, **kwargs):
     instance.preferences.save()
+
+class Calendar(models.Model):
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+	meal_plans = models.ForeignKey('DailyMealPlan', on_delete=models.CASCADE)
+
+	def __str__(self):
+		return(str(self.id))
+
 
 #class GroceryList(models.Model):
 

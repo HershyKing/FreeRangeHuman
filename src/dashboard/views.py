@@ -1,18 +1,20 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Tag, Ingredient, Recipe
+from .models import Tag, Ingredient, Recipe, Calendar
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm, UserForm, PreferencesForm, RecipeForm
-from .models import Preferences
+from .forms import SignUpForm, UserForm, PreferencesForm, RecipeForm, InstructionsForm, DailyMealPlanForm
+from .models import Preferences, DailyMealPlan
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.contrib import messages
 from django.http import HttpResponsePermanentRedirect
-
-
+from django.http import HttpResponseRedirect
+from datetime import datetime, timedelta, date
+from django.conf import settings
+from django.contrib.auth.models import User
 
 # Create your views here.
 class TagListView(LoginRequiredMixin, generic.ListView):
@@ -26,12 +28,45 @@ def RecipeView(request):
     recipes = Recipe.objects.all()
     return render(request, 'recipes.html', {'recipes': recipes})
 
-def url_redirect(request):
-    return HttpResponsePermanentRedirect("/dashboard")
+# class CreateRecipe(CreateView):
+#     model = Recipe
+#     fields = ['first_name', 'last_name']
+#     success_url = reverse_lazy('profile-list')
 
+#     def get_context_data(self, **kwargs):
+#         data = super(ProfileFamilyMemberCreate, self).get_context_data(**kwargs)
+#         if self.request.POST:
+#             data['familymembers'] = FamilyMemberFormSet(self.request.POST)
+#         else:
+#             data['familymembers'] = FamilyMemberFormSet()
+#         return data
+
+#     def form_valid(self, form):
+#         context = self.get_context_data()
+#         familymembers = context['familymembers']
+#         with transaction.atomic():
+#             self.object = form.save()
+
+#             if familymembers.is_valid():
+#                 familymembers.instance = self.object
+#                 familymembers.save()
+#         return super(ProfileFamilyMemberCreate, self).form_valid(form)
+
+def url_redirect(request):
+    return HttpResponsePermanentRedirect("/dashboard/")
+
+@login_required
 def recipe(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     return render(request, 'recipe.html', {'recipe': recipe})
+
+@login_required
+def meal_plan(request, pk):
+    meal = get_object_or_404(Calendar, id=pk)
+    #Calendar.objects.get(id=pk).meal_plans.aggregate(Sum(''))
+    # meal_plans = Calender.objects.all().values_list('meal_plans__pk', flat=True)
+    # DailyMealPlan.objects.filter(pk__in=meal_plans).values_list('meal1__pk')
+    return render(request, 'meal.html', {'meal': meal})
 
 # class DashView(LoginRequiredMixin, generic.ListView):
 # 	# Count of tags and ingredients
@@ -98,29 +133,59 @@ def update_preferences(request):
 def add_recipe(request):
     if request.method == 'POST':
         recipe_form = RecipeForm(request.POST)
-        if recipe_form.is_valid() and recipe_form.is_valid():
+        #instructions_form = InstructionsForm(request.POST)
+        if recipe_form.is_valid(): 
+        #and instructions_form.is_valid():
             recipe_form.save()
+        #    instructions_form.save()
             messages.success(request, 'Your recipe was successfully updated!')
             return redirect('../../dashboard')
         else:
             messages.error(request, 'Please correct the error below.')
     else:
         recipe_form = RecipeForm(request.POST)
+    #    instructions_form = InstructionsForm(request.POST)
     return render(request, 'recipe_form.html', context={
         'recipe_form': recipe_form,
+    #    'instructions_form': instructions_form
+    })
+
+@login_required
+def add_MealPlan(request):
+    if request.method == 'POST':
+        meal_plan = DailyMealPlanForm(request.POST)
+        if meal_plan.is_valid():
+            mp = meal_plan.save()
+            mp.refresh_from_db()
+            c = Calendar(user_id=request.user.id, meal_plans=mp)
+            c.save()
+            messages.success(request, 'Your recipe was successfully updated!')
+            return redirect('../../dashboard')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        meal_plan = DailyMealPlanForm(request.POST)
+    return render(request, 'meal_plan.html', context={
+        'meal_plan': meal_plan
     })
 
 def index(request):
 
-	# Count of tags and ingredients
-	num_tags=Tag.objects.all().count()
-	num_ing = Ingredient.objects.all().count()
+    # Count of tags and ingredients
+    num_tags = Tag.objects.all().count()
+    num_ing = Ingredient.objects.all().count()
 
-	# Number of visits to this view, as counted in the session variable.
-	num_visits=request.session.get('num_visits', 0)
-	request.session['num_visits'] = num_visits+1
+    #Last 7 meals
+    meal_plans = Calendar.objects.filter(user_id=request.user.id).order_by('-meal_plans__date')[:7]
+    # mp = DailyMealPlan.objects.filter().values_list('sale__pk', flat=True)
+    # DailyMealPlan.objects.filter(pk__in=lost_sales_id).annotate(Sum('qty'))
 
-	return render(
-		request,
-		'index.html',
-		context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits})
+
+    # Number of visits to this view, as counted in the session variable.
+    num_visits=request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits+1
+
+    return render(
+    request,
+    'index.html',
+    context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits, 'meal_plans': meal_plans})

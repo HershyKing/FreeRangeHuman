@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from .models import DailyMealPlan, Ingredient, Tag, Recipe, Instruction
+from .models import DailyMealPlan, Ingredient, Tag, Recipe, Instruction, Calendar
 from .models import Preferences
 
 
@@ -11,12 +11,14 @@ admin.site.register(Ingredient)
 admin.site.register(Tag)
 admin.site.register(Recipe)
 admin.site.register(Instruction)
+admin.site.register(Calendar)
 
 class PreferencesInline(admin.StackedInline):
     model = Preferences
     can_delete = False
     verbose_name_plural = 'Preferences'
     fk_name = 'user'
+
 
 class CustomUserAdmin(BaseUserAdmin):
     inlines = (PreferencesInline, )

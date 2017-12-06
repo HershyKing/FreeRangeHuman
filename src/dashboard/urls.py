@@ -11,5 +11,7 @@ urlpatterns = [
 	url(r'^preferences/$', views.update_preferences, name='preferences'),
 	url(r'recipes', views.RecipeView, name='recipes'),
 	url(r'^recipe/(?P<pk>\d+)/$', views.recipe, name='recipe'),
-	url(r'^add_recipe/$', views.add_recipe, name='add_recipe')
+	url(r'^add_recipe/$', views.add_recipe, name='add_recipe'),
+	url(r'^add_meal/$', views.add_MealPlan, name='add_mealplan'),
+	url(r'^meal/(?P<pk>\d+)/$', views.meal_plan, name='meal_plan'),
 ]
