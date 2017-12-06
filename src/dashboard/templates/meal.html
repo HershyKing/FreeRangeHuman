@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <body>
+      <ul>
+        <li><a href="{% url 'recipe' meal.meal_plans.meal1.pk %}">{{ meal.meal_plans.meal1.recipe_name }}</li>
+        <li><a href="{% url 'recipe' meal.meal_plans.meal2.pk %}">{{ meal.meal_plans.meal2.recipe_name }}</li>
+        <li><a href="{% url 'recipe' meal.meal_plans.meal3.pk %}">{{ meal.meal_plans.meal3.recipe_name }}</li>
+      </ul>
+  </body>
+{% endblock %}
