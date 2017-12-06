@@ -63,6 +63,9 @@ def recipe(request, pk):
 @login_required
 def meal_plan(request, pk):
     meal = get_object_or_404(Calendar, id=pk)
+    #Calendar.objects.get(id=pk).meal_plans.aggregate(Sum(''))
+    # meal_plans = Calender.objects.all().values_list('meal_plans__pk', flat=True)
+    # DailyMealPlan.objects.filter(pk__in=meal_plans).values_list('meal1__pk')
     return render(request, 'meal.html', {'meal': meal})
 
 # class DashView(LoginRequiredMixin, generic.ListView):
@@ -130,20 +133,21 @@ def update_preferences(request):
 def add_recipe(request):
     if request.method == 'POST':
         recipe_form = RecipeForm(request.POST)
-        instructions_form = InstructionsForm(request.POST)
-        if recipe_form.is_valid() and instructions_form.is_valid():
+        #instructions_form = InstructionsForm(request.POST)
+        if recipe_form.is_valid(): 
+        #and instructions_form.is_valid():
             recipe_form.save()
-            instructions_form.save()
+        #    instructions_form.save()
             messages.success(request, 'Your recipe was successfully updated!')
             return redirect('../../dashboard')
         else:
             messages.error(request, 'Please correct the error below.')
     else:
         recipe_form = RecipeForm(request.POST)
-        instructions_form = InstructionsForm(request.POST)
+    #    instructions_form = InstructionsForm(request.POST)
     return render(request, 'recipe_form.html', context={
         'recipe_form': recipe_form,
-        'instructions_form': instructions_form
+    #    'instructions_form': instructions_form
     })
 
 @login_required
@@ -173,6 +177,9 @@ def index(request):
 
     #Last 7 meals
     meal_plans = Calendar.objects.filter(user_id=request.user.id).order_by('-meal_plans__date')[:7]
+    # mp = DailyMealPlan.objects.filter().values_list('sale__pk', flat=True)
+    # DailyMealPlan.objects.filter(pk__in=lost_sales_id).annotate(Sum('qty'))
+
 
     # Number of visits to this view, as counted in the session variable.
     num_visits=request.session.get('num_visits', 0)

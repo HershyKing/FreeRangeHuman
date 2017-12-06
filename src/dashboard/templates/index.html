@@ -15,7 +15,7 @@
     {% for meal_plan in meal_plans %}
       <tr>
         <td>
-          <a href="{% url 'meal_plan' meal_plan.pk %}">{{meal_plan.meal_plans.date}}<br>
+          <a href="{% url 'meal_plan' meal_plan.pk %}">{{meal_plan.meal_plans.date}}<br></a>
         </td>
       </tr>
     {% endfor %}
