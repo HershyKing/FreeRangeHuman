@@ -95,7 +95,7 @@ class RecipeFormTest(TestCase):
 		self.response = self.client.get(url)
 
 	def test_success(self):
-		self.assertEquals(self.response.status_code, 200)
+		self.assertEquals(self.response.status_code, 302)
 
 	def test_resolve_index(self):
 		view = resolve('/dashboard/add_recipe/')
@@ -107,7 +107,7 @@ class RecipesTest(TestCase):
 		self.response = self.client.get(url)
 
 	def test_recipe_view_status_code(self):
-		self.assertEquals(self.response.status_code, 200)
+		self.assertEquals(self.response.status_code, 302)
 
 	def test_recipe_url_resolves_recipe_view(self):
 		view = resolve('/dashboard/recipes')
@@ -138,5 +138,5 @@ class RecipeTests(TestCase):
 		self.assertEquals(response.status_code, 404)
 
 	def test_board_topics_url_resolves_board_topics_view(self):
-		view = resolve('/recipe/1/')
+		view = resolve('/dashboard/recipe/1/')
 		self.assertEquals(view.func, recipe)
