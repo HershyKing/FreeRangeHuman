@@ -16,12 +16,14 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
-#from dashboard.views import hello_world
+from dashboard.views import index, url_redirect
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^dashboard/', include('dashboard.urls')),
+    url(r'^dashboard/', include('dashboard.urls'), name='homepage'),
     url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'^$', url_redirect, name="url-redirect"),
 ]
 
 ''' django.ontrib.auth.urls imports the following sub urls:

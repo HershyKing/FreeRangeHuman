@@ -70,29 +70,27 @@ class Instruction(models.Model):
 
 	def __str__(self):
 		return self.instruct_id
+		
+#Extend user class by using a one to one relation between the two
+class Preferences(models.Model):
+	#Fields
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	calorie_Goal = models.IntegerField(blank=True, null=True)
+	fat_Goal = models.IntegerField(blank=True, null=True)
+	carb_Goal = models.IntegerField(blank=True, null=True)
+	protein_Goal = models.IntegerField(blank=True, null=True)
+	tags = models.ManyToManyField(Tag, blank=True)
+	ingredients = models.ManyToManyField(Ingredient, blank=True)
 
+#After call to save function of user then check if need to save preferences by updating or creating a new object
+@receiver(post_save, sender=User)
+def create_user_Preferences(sender, instance, created, **kwargs):
+    if created:
+        Preferences.objects.create(user=instance)
 
-
-# Take out preferences for now to allow admin page to work
-
-# class Preferences(models.Model):
-# 	#Fields
-# 	user = models.OneToOneField(User, on_delete=models.CASCADE)
-# 	tags = models.ManyToManyField(Tag)
-# 	ingredients = models.ManyToManyField(Ingredient)
-# 	CalorieGoal = models.IntegerField()
-# 	fatGoal = models.IntegerField()
-# 	carbGoal = models.IntegerField()
-# 	proteinGoal = models.IntegerField()
-
-# @receiver
-# def create_user_preferences(sender, instance, created, **kwargs):
-# 	if created:
-# 		Preferences.objects.create(user=instance)
-
-# @receiver(post_save, sender=User)
-# def save_user_Preferences(sender, instance, **kwargs):
-# 	instance.Preferences.save()
+@receiver(post_save, sender=User)
+def save_user_Preferences(sender, instance, **kwargs):
+    instance.preferences.save()
 
 #class GroceryList(models.Model):
 
