@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Tag, Ingredient
+from .models import Tag, Ingredient, Recipe
 from .models import Preferences
 
 #doesn't require all these fields except the user field
@@ -27,3 +27,8 @@ class PreferencesForm(forms.ModelForm):
     class Meta:
         model = Preferences
         fields = ('calorie_Goal', 'fat_Goal', 'carb_Goal', 'protein_Goal', 'tags', 'ingredients')
+
+class RecipeForm(forms.ModelForm):
+    class Meta:
+        model = Recipe
+        fields = ('recipe_name', 'calories', 'servings', 'carb', 'fat', 'protein', 'ingredients', 'tags')
