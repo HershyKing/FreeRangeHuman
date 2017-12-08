@@ -1,5 +1,39 @@
-.sidebar-nav {
+
+.title-name {
+
+    /*font-family: 'Open Sans Condensed', sans-serif;*/
+    font-family: 'Amatic SC', cursive;
+    /*font-weight: bold;*/
+    font-size: 80px;
+    /*color: #00FDC8;*/
+}
+
+#btn-signup{
+	/*background-color: #00FDC8; */
+	color: #9368e9;
+}
+
+.theme{
+	color: #00FDC8;
+}
+
+.title-description {
+	/*color: #00FDC8;	*/
+}
+/*.sidebar-nav {
     margin-top: 20px;
     padding: 0;
     list-style: none;
+}*/
+
+.company-font {
+    font-family: 'Amatic SC', cursive;
+    font-size: 20px;
+}
+
+.company-name {
+    font-family: 'Amatic SC', cursive;
+    color: #00FDC8;
+    font-size: 40px;    
+    /*background-color: blue;*/
 }

@@ -1,9 +1,13 @@
-{% extends "base_generic.html" %}
-
-{% block content %}
-    <h1>Tag List</h1>
-
-    {% if tag_list %}
+{% extends "theme/dashboard.html" %} {% block content %}
+<div class="col-md-4">
+    <div class="card">
+        <div class="header">
+            <h4 class="title">Tag List</h4>
+            <!-- <p class="category">User preferences to help determine meal plan </p> -->
+        </div>
+        <hr>
+        <div class="content">
+            {% if tag_list %}
     <ul>
 
       {% for tag in tag_list %}
@@ -15,5 +19,8 @@
     </ul>
     {% else %}
       <p>There are no Tags to classify your food. Like how there is no god.</p>
-    {% endif %}       
+    {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}

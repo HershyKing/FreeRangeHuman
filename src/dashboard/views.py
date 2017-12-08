@@ -16,6 +16,8 @@ from datetime import datetime, timedelta, date
 from django.conf import settings
 from django.contrib.auth.models import User
 
+redirectUrl = '../../dashboard'
+
 # Create your views here.
 class TagListView(LoginRequiredMixin, generic.ListView):
 	model = Tag
@@ -23,10 +25,61 @@ class TagListView(LoginRequiredMixin, generic.ListView):
 class IngredientListView(LoginRequiredMixin, generic.ListView):
 	model = Ingredient	
 
+def splash(request):
+    # Count of tags and ingredients
+    num_tags=Tag.objects.all().count()
+    num_ing = Ingredient.objects.all().count()
+
+    # Number of visits to this view, as counted in the session variable.
+    num_visits=request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits+1
+
+    return render(
+        request,
+        # 'theme/test.html')
+        'theme/splash.html')
+
+def dash(request):
+    # Count of tags and ingredients
+    num_tags=Tag.objects.all().count()
+    num_ing = Ingredient.objects.all().count()
+
+    # Number of visits to this view, as counted in the session variable.
+    num_visits=request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits+1
+
+    return render(
+        request,
+        # 'theme/test.html')
+        'theme/dashboard.html')
+
 @login_required
 def RecipeView(request):
     recipes = Recipe.objects.all()
     return render(request, 'recipes.html', {'recipes': recipes})
+
+
+@login_required
+@transaction.atomic
+def pref(request):
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        Preferences_form = PreferencesForm(request.POST, instance=request.user.preferences)
+        if user_form.is_valid() and Preferences_form.is_valid():
+            user_form.save()
+            Preferences_form.save()
+            messages.success(request, 'Your preferences were successfully updated!')
+            return redirect(redirectUrl)
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        user_form = UserForm(instance=request.user)
+        Preferences_form = PreferencesForm(instance=request.user.preferences)
+    return render(request, 'theme/preferences.html', context={
+        'user_form': user_form,
+        'Preferences_form': Preferences_form
+    })
+
 
 # class CreateRecipe(CreateView):
 #     model = Recipe
@@ -53,7 +106,7 @@ def RecipeView(request):
 #         return super(ProfileFamilyMemberCreate, self).form_valid(form)
 
 def url_redirect(request):
-    return HttpResponsePermanentRedirect("/dashboard/")
+    return HttpResponseRedirect("/dashboard")
 
 @login_required
 def recipe(request, pk):
@@ -99,7 +152,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=raw_password)
             login(request, user)
-            return redirect('../../dashboard')
+            return redirect(redirectUrl)
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
@@ -118,7 +171,7 @@ def update_preferences(request):
             user_form.save()
             Preferences_form.save()
             messages.success(request, 'Your preferences were successfully updated!')
-            return redirect('../../dashboard')
+            return redirect(redirectUrl)
         else:
             messages.error(request, 'Please correct the error below.')
     else:
@@ -139,7 +192,7 @@ def add_recipe(request):
             recipe_form.save()
         #    instructions_form.save()
             messages.success(request, 'Your recipe was successfully updated!')
-            return redirect('../../dashboard')
+            return redirect(redirectUrl)
         else:
             messages.error(request, 'Please correct the error below.')
     else:
@@ -160,7 +213,7 @@ def add_MealPlan(request):
             c = Calendar(user_id=request.user.id, meal_plans=mp)
             c.save()
             messages.success(request, 'Your recipe was successfully updated!')
-            return redirect('../../dashboard')
+            return redirect(redirectUrl)
         else:
             messages.error(request, 'Please correct the error below.')
     else:
@@ -188,4 +241,25 @@ def index(request):
     return render(
     request,
     'index.html',
+    context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits, 'meal_plans': meal_plans})
+
+def main(request):
+
+    # Count of tags and ingredients
+    num_tags = Tag.objects.all().count()
+    num_ing = Ingredient.objects.all().count()
+
+    #Last 7 meals
+    meal_plans = Calendar.objects.filter(user_id=request.user.id).order_by('-meal_plans__date')[:7]
+    # mp = DailyMealPlan.objects.filter().values_list('sale__pk', flat=True)
+    # DailyMealPlan.objects.filter(pk__in=lost_sales_id).annotate(Sum('qty'))
+
+
+    # Number of visits to this view, as counted in the session variable.
+    num_visits=request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits+1
+
+    return render(
+    request,
+    'main.html',
     context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits, 'meal_plans': meal_plans})

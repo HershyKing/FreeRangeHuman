@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" /> 
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.ico' %}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Tutorial Components - Light Bootstrap Dashboard Pro by Creative Tim</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" /> 
+    {% load static %}
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" /> 
+    {% load static %}
+    <link href="{% static 'assets/css/light-bootstrap-dashboard.css' %}" rel="stylesheet" /> 
+    {% load static %}
+    <link href="{% static 'assets/css/demo.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.css"> 
+    {% load static %}
+    <link href="{% static 'css/documentation.css' %}" rel="stylesheet" />
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Grand+Hotel|Open+Sans:400,300' rel='stylesheet' type='text/css'> 
+	<link href="https://fonts.googleapis.com/css?family=Amatic+SC|Open+Sans+Condensed:300" rel="stylesheet">
+    {% load static %}
+    <!-- <link href="{% static 'assets/css/pe-icon-7-stroke.css' %}" rel="stylesheet" /> -->
+    {% load static %}
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+
+</head>
+
+<body>
+    <div class="header-wrapper">
+        {% load static %}
+        <div class="header" style="background-image: url('{% static 'assets/img/full-screen-image-3.jpg' %}'); ">
+        <!-- <div class="header" style="background-image: url('{% static 'assets/img/anish.jpg' %}'); "> -->
+            <div class="filter"></div>
+            <div class="title-container text-center">
+                <h1 class="title-name">Free Range Human</h1>
+                <!-- <h3 class="category">v1.4.0</h3> -->
+                <h4 class="title-description">Join us to live your life as a Free Range Human.</h4>
+                <!-- <h4 class="description text-center"></h4> -->
+                <a id="btn-signup" href="{% url 'main' %}" class="btn btn-neutral btn-lg btn-round btn-fill" target="_blank">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+<!--   Core JS Files   -->
+{% load static %}
+<script src="{% static 'assets/js/jquery.3.2.1.min.js' %}" type="text/javascript"></script>
+{% load static %}
+<script src="{% static 'assets/js/bootstrap.min.js' %}" type="text/javascript"></script>
+<!--  Charts Plugin -->
+{% load static %}
+<script src="{% static 'assets/js/chartist.min.js' %}"></script>
+<!--  Notifications Plugin    -->
+{% load static %}
+<script src="{% static 'assets/js/bootstrap-notify.js' %}"></script>
+<!--  Google Maps Plugin    -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+<!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
+{% load static %}
+<script src="{% static 'assets/js/light-bootstrap-dashboard.js' %}"></script>
+<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
+{% load static %}
+<script src="{% static 'assets/js/demo.js' %}"></script>
+
+</html>

@@ -124,7 +124,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/dashboard/'
+LOGIN_REDIRECT_URL = '/dashboard'
 
 # For setting up emails for password reset
 # TODO: See django docs for sending email
