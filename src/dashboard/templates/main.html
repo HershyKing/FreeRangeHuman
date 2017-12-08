@@ -1,0 +1,52 @@
+{% extends "theme/dashboard.html" %} {% block content %}
+<div class="col-md-4">
+    <div class="card">
+        <div class="header">
+            <h4 class="title">Meal Plan Dashboard</h4>
+            <p class="category">Your meals will show up here</p>
+        </div>
+        <hr>
+        <div class="content">
+            <p>Welcome to <em>FreeRangeHuman</em>, BE FREE HUMANS. THE EARTH IS FLAT.</p>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Weekly Meal Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for meal_plan in meal_plans %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'meal_plan' meal_plan.pk %}">{{meal_plan.meal_plans.date}}<br></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p><a href="{% url 'add_mealplan'%}">Add New Daily Meal</a>
+                <br>
+            </p>
+            
+        </div>
+    </div>
+</div>
+<div class="col-md-4">
+    <div class="card">
+        <div class="header">
+            <h4 class="title">Dynamic Content</h4>
+            <p class="category">Your stats will show up here</p>
+        </div>
+        <hr>
+        <div class="content">
+            <h4>The kitchen has the following counts:</h4>
+            <ul>
+                <li><strong>TAGS:</strong> {{ num_tags }}</li>
+                <li><strong>INGREDIENTS:</strong> {{ num_ing }}</li>
+            </ul>
+            <p>You have visited this page {{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

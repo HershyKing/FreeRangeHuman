@@ -1,10 +1,13 @@
-{% extends "base_generic.html" %}
-
-{% block content %}
-  <body>
-    <h1>Recipes</h1>
-
-    <p><a href="{% url 'add_recipe' %}">Add new</a><br></p>
+{% extends "theme/dashboard.html" %} {% block content %}
+<div class="col-md-4">
+    <div class="card">
+        <div class="header">
+            <h4 class="title">Recipes</h4>
+            <!-- <p class="category">User preferences to help determine meal plan </p> -->
+        </div>
+        <hr>
+        <div class="content">
+            <p><a href="{% url 'add_recipe' %}">Add new</a><br></p>
     <table border="1">
       <thead>
         <tr>
@@ -21,5 +24,7 @@
         {% endfor %}
       </tbody>
     </table>
-  </body>
+        </div>
+    </div>
+</div>
 {% endblock %}

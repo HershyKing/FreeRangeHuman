@@ -1,78 +1,94 @@
-{% extends "base_generic.html" %}
+{% extends "theme/dashboard.html" %} {% block content %}
+<div class="col-md-4">
+    <div class="card">
+        <div class="header">
+            <h4 class="title">Recipe</h4>
+            <!-- <p class="category">User preferences to help determine meal plan </p> -->
+        </div>
+        <hr>
+        <div class="content">
+            <h1> {{ recipe.recipe_name }} </h1>
+            <br>
+            <h4> Ingredients </h4>
 
-{% block content %}
-<h1> {{ recipe.recipe_name }} </h1>
-<br>
-<h4> Ingredients </h4>
+            <body>
+                <ul>
+                    {% for ingredient in recipe.ingredients.all %}
+                    <li>{{ ingredient.ing_name }}</li>
+                    {% endfor %}
+                </ul>
+            </body>
+            <br>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Nutritional Information</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            Calories
+                            <br>
+                        </td>
+                        <td>
+                            {{ recipe.calories }}
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Servings
+                            <br>
+                        </td>
+                        <td>
+                            {{ recipe.servings }}
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Fat
+                            <br>
+                        </td>
+                        <td>
+                            {{ recipe.fat }}
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Carbs
+                            <br>
+                        </td>
+                        <td>
+                            {{ recipe.carb }}
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Protein
+                            <br>
+                        </td>
+                        <td>
+                            {{ recipe.protein }}
+                            <br>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <h4> Tags </h4>
 
-  <body>
-      <ul>
-      {% for ingredient in recipe.ingredients.all %}
-        <li>{{ ingredient.ing_name }}</li>
-      {% endfor %}
-      </ul>
-  </body>
-
-<br>
-<table border="1">
-<thead>
-    <tr>
-      <th>Nutritional Information</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-    	<td>
-          Calories<br>
-        </td>
-        <td>
-          {{ recipe.calories }}<br>
-        </td>
-    </tr>
-    <tr>
-    	<td>
-          Servings<br>
-        </td>
-        <td>
-          {{ recipe.servings }}<br>
-        </td>
-    </tr>
-    <tr>
-    	<td>
-          Fat<br>
-        </td>
-        <td>
-          {{ recipe.fat }}<br>
-        </td>
-    </tr>
-    <tr>
-    	<td>
-          Carbs<br>
-        </td>
-        <td>
-          {{ recipe.carb }}<br>
-        </td>
-    </tr>
-    <tr>
-    	<td>
-          Protein<br>
-        </td>
-        <td>
-          {{ recipe.protein }}<br>
-        </td>
-    </tr>
-  </tbody>
-</table>
-
-<br>
-<h4> Tags </h4>
-
-  <body>
-      <ul>
-      {% for tag in recipe.tags.all %}
-        <li>{{ tag.tag_name }}</li>
-      {% endfor %}
-      </ul>
-  </body>
-
+            <body>
+                <ul>
+                    {% for tag in recipe.tags.all %}
+                    <li>{{ tag.tag_name }}</li>
+                    {% endfor %}
+                </ul>
+            </body>
+        </div>
+    </div>
+</div>
 {% endblock %}
