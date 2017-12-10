@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Tag, Ingredient, Recipe, Instruction, DailyMealPlan
+from .models import Tag, Ingredient, Recipe, Instruction, DailyMealPlan, Calendar
 from .models import Preferences
 
 #doesn't require all these fields except the user field
@@ -36,7 +36,7 @@ class RecipeForm(forms.ModelForm):
 class DailyMealPlanForm(forms.ModelForm):
     class Meta:
         model = DailyMealPlan
-        fields = ('date', 'meal1', 'meal2', 'meal3')
+        fields = ('meal1', 'meal2', 'meal3')
 
 # IngredientFormSet = inlineformset_factory(Recipe, Ingredient)
 # InstructionFormSet = inlineformset_factory(Recipe, Instruction)
@@ -47,4 +47,7 @@ class InstructionsForm(forms.ModelForm):
         model = Instruction
         fields = ('step_num', 'instruction')
 
-
+class CalendarForm(forms.ModelForm):
+    class Meta:
+        model = Calendar
+        fields = ('date',)

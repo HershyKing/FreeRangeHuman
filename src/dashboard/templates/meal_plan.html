@@ -9,6 +9,7 @@
         <div class="content">
             <form method="post">
   {% csrf_token %}
+  {{ Calendar_date.as_p }}
   {{ meal_plan.as_p }}
   <button type="submit">Save changes</button>
 </form>
