@@ -8,13 +8,13 @@ from django.conf import settings
 class DailyMealPlan(models.Model):
 	# Fields
 	meal_plan_id = models.AutoField(primary_key=True)
-	date = models.DateField()
+	# date = models.DateField()
 	meal1 = models.ForeignKey('Recipe', related_name="meal1", on_delete=models.CASCADE)
 	meal2 = models.ForeignKey('Recipe', related_name="meal2", on_delete=models.CASCADE)
 	meal3 = models.ForeignKey('Recipe', related_name="meal3", on_delete=models.CASCADE)
 
 	def __str__(self):
-		return str(self.date)
+		return str(self.meal_plan_id)
 
 	def mealNutrition():
 		return []
@@ -103,7 +103,21 @@ def save_user_Preferences(sender, instance, **kwargs):
 
 class Calendar(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+	date = models.DateField()
 	meal_plans = models.ForeignKey('DailyMealPlan', on_delete=models.CASCADE)
+
+	class Meta:
+		unique_together = (('date', 'user'),)
+
+
+# def validate_unique(self, exclude=None):
+# 	qs = Calendar.objects.filter(date=self.date)
+# 	if qs.filter(meal_plans__id=self.meal_plans.id).exists():
+# 		raise ValidationError('Must be unique meal plan for day')
+
+	def save(self, *args, **kwargs):
+		self.validate_unique()
+		super(Calendar, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return(str(self.id))

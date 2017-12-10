@@ -5,7 +5,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm, UserForm, PreferencesForm, RecipeForm, InstructionsForm, DailyMealPlanForm
+from .forms import SignUpForm, UserForm, PreferencesForm, RecipeForm, InstructionsForm, DailyMealPlanForm, CalendarForm
 from .models import Preferences, DailyMealPlan
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
@@ -15,6 +15,7 @@ from django.http import HttpResponseRedirect
 from datetime import datetime, timedelta, date
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.db.models import Sum
 
 redirectUrl = '../../dashboard'
 
@@ -27,7 +28,7 @@ class IngredientListView(LoginRequiredMixin, generic.ListView):
 
 def splash(request):
     # Count of tags and ingredients
-    num_tags=Tag.objects.all().count()
+    num_tags = Tag.objects.all().count()
     num_ing = Ingredient.objects.all().count()
 
     # Number of visits to this view, as counted in the session variable.
@@ -80,31 +81,6 @@ def pref(request):
         'Preferences_form': Preferences_form
     })
 
-
-# class CreateRecipe(CreateView):
-#     model = Recipe
-#     fields = ['first_name', 'last_name']
-#     success_url = reverse_lazy('profile-list')
-
-#     def get_context_data(self, **kwargs):
-#         data = super(ProfileFamilyMemberCreate, self).get_context_data(**kwargs)
-#         if self.request.POST:
-#             data['familymembers'] = FamilyMemberFormSet(self.request.POST)
-#         else:
-#             data['familymembers'] = FamilyMemberFormSet()
-#         return data
-
-#     def form_valid(self, form):
-#         context = self.get_context_data()
-#         familymembers = context['familymembers']
-#         with transaction.atomic():
-#             self.object = form.save()
-
-#             if familymembers.is_valid():
-#                 familymembers.instance = self.object
-#                 familymembers.save()
-#         return super(ProfileFamilyMemberCreate, self).form_valid(form)
-
 def url_redirect(request):
     return HttpResponseRedirect("/dashboard")
 
@@ -119,7 +95,11 @@ def meal_plan(request, pk):
     #Calendar.objects.get(id=pk).meal_plans.aggregate(Sum(''))
     # meal_plans = Calender.objects.all().values_list('meal_plans__pk', flat=True)
     # DailyMealPlan.objects.filter(pk__in=meal_plans).values_list('meal1__pk')
-    return render(request, 'meal.html', {'meal': meal})
+    calories = (Calendar.objects.filter(id=pk).values_list('meal_plans__meal1__calories', flat=True)[0] 
+        + Calendar.objects.filter(id=pk).values_list('meal_plans__meal2__calories', flat=True)[0]
+        + Calendar.objects.filter(id=pk).values_list('meal_plans__meal3__calories', flat=True)[0])
+    calGoalDelta = request.user.preferences.calorie_Goal - calories
+    return render(request, 'meal.html', {'meal': meal, 'calories': calories, 'calGoalDelta':calGoalDelta})
 
 # class DashView(LoginRequiredMixin, generic.ListView):
 # 	# Count of tags and ingredients
@@ -196,7 +176,7 @@ def add_recipe(request):
         else:
             messages.error(request, 'Please correct the error below.')
     else:
-        recipe_form = RecipeForm(request.POST)
+        recipe_form = RecipeForm()
     #    instructions_form = InstructionsForm(request.POST)
     return render(request, 'recipe_form.html', context={
         'recipe_form': recipe_form,
@@ -207,41 +187,44 @@ def add_recipe(request):
 def add_MealPlan(request):
     if request.method == 'POST':
         meal_plan = DailyMealPlanForm(request.POST)
-        if meal_plan.is_valid():
+        Calendar_date = CalendarForm(request.POST)
+        if meal_plan.is_valid() and Calendar_date.is_valid():
             mp = meal_plan.save()
             mp.refresh_from_db()
-            c = Calendar(user_id=request.user.id, meal_plans=mp)
+            c = Calendar(user_id=request.user.id, meal_plans=mp, date=Calendar_date.cleaned_data.get('date'))
             c.save()
-            messages.success(request, 'Your recipe was successfully updated!')
+            messages.success(request, 'Your meal_plan was successfully updated!')
             return redirect(redirectUrl)
         else:
             messages.error(request, 'Please correct the error below.')
     else:
-        meal_plan = DailyMealPlanForm(request.POST)
+        meal_plan = DailyMealPlanForm()
+        Calendar_date = CalendarForm()
     return render(request, 'meal_plan.html', context={
-        'meal_plan': meal_plan
+        'meal_plan': meal_plan,
+        'Calendar_date': Calendar_date,
     })
 
-def index(request):
+# def index(request):
 
-    # Count of tags and ingredients
-    num_tags = Tag.objects.all().count()
-    num_ing = Ingredient.objects.all().count()
+#     # Count of tags and ingredients
+#     num_tags = Tag.objects.all().count()
+#     num_ing = Ingredient.objects.all().count()
 
-    #Last 7 meals
-    meal_plans = Calendar.objects.filter(user_id=request.user.id).order_by('-meal_plans__date')[:7]
-    # mp = DailyMealPlan.objects.filter().values_list('sale__pk', flat=True)
-    # DailyMealPlan.objects.filter(pk__in=lost_sales_id).annotate(Sum('qty'))
+#     #Last 7 meals
+#     meal_plans = Calendar.objects.filter(user_id=request.user.id).order_by('-meal_plans__date')[:7]
+#     # mp = DailyMealPlan.objects.filter().values_list('sale__pk', flat=True)
+#     # DailyMealPlan.objects.filter(pk__in=lost_sales_id).annotate(Sum('qty'))
 
 
-    # Number of visits to this view, as counted in the session variable.
-    num_visits=request.session.get('num_visits', 0)
-    request.session['num_visits'] = num_visits+1
+#     # Number of visits to this view, as counted in the session variable.
+#     num_visits=request.session.get('num_visits', 0)
+#     request.session['num_visits'] = num_visits+1
 
-    return render(
-    request,
-    'index.html',
-    context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits, 'meal_plans': meal_plans})
+#     return render(
+#     request,
+#     'index.html',
+#     context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits, 'meal_plans': meal_plans})
 
 def main(request):
 
@@ -250,9 +233,11 @@ def main(request):
     num_ing = Ingredient.objects.all().count()
 
     #Last 7 meals
-    meal_plans = Calendar.objects.filter(user_id=request.user.id).order_by('-meal_plans__date')[:7]
-    # mp = DailyMealPlan.objects.filter().values_list('sale__pk', flat=True)
-    # DailyMealPlan.objects.filter(pk__in=lost_sales_id).annotate(Sum('qty'))
+    #startdate = datetime.today() - timedelta(days=3)
+    startdate = datetime.today()
+    #enddate = datetime.today() + timedelta(days=3)
+    enddate = datetime.today() + timedelta(days=6)
+    meal_plans = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).order_by('-date')
 
 
     # Number of visits to this view, as counted in the session variable.
@@ -263,3 +248,65 @@ def main(request):
     request,
     'main.html',
     context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits, 'meal_plans': meal_plans})
+
+# def PantryView(request):
+
+#     startdate = datetime.today() - timedelta(days=6)
+#     enddate = datetime.today()
+#     ingredients = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).values('meal_plans__meal1__ingredients__ing_name', 'meal_plans__meal2__ingredients__ing_name', 'meal_plans__meal3__ingredients__ing_name')
+#     #ingredients = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).values('meal_plans__meal1')
+
+#     ingredient = []
+#     for ing in ingredients:
+#         for name in ing.values():
+#             if name not in ingredient:
+#                 ingredient.append(name)
+
+#     return render(
+#     request,
+#     'pantry.html',
+#     context={'ingredients':ingredient, })
+
+# def GroceryView(request):
+
+#     startdate = datetime.today() + timedelta(days=1)
+#     enddate = startdate + timedelta(days=6)
+#     ingredients = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).values('meal_plans__meal1__ingredients__ing_name', 'meal_plans__meal2__ingredients__ing_name', 'meal_plans__meal3__ingredients__ing_name')
+#     #ingredients = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).values('meal_plans__meal1')
+
+#     ingredient = []
+#     for ing in ingredients:
+#         for name in ing.values():
+#             if name not in ingredient:
+#                 ingredient.append(name)
+
+#     return render(
+#     request,
+#     'grocery.html',
+#     context={'ingredients':ingredient, })
+
+def KitchenView(request):
+    startdate1 = datetime.today() + timedelta(days=1)
+    enddate1 = startdate1 + timedelta(days=6)
+    ingredients1 = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate1,enddate1]).values('meal_plans__meal1__ingredients__ing_name', 'meal_plans__meal2__ingredients__ing_name', 'meal_plans__meal3__ingredients__ing_name')
+
+    groceries = []
+    for ing in ingredients1:
+        for name in ing.values():
+            if name not in groceries:
+                groceries.append(name)
+
+    startdate2 = datetime.today() - timedelta(days=6)
+    enddate2 = datetime.today()
+    ingredients2 = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate2,enddate2]).values('meal_plans__meal1__ingredients__ing_name', 'meal_plans__meal2__ingredients__ing_name', 'meal_plans__meal3__ingredients__ing_name')
+
+    pantry = []
+    for ing in ingredients2:
+        for name in ing.values():
+            if name not in pantry:
+                pantry.append(name)
+
+    return render(
+    request,
+    'kitchen.html',
+    context={'groceries':groceries, 'pantry': pantry, })

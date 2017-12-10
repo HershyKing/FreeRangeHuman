@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
-from dashboard.views import index, url_redirect, splash
+from dashboard.views import url_redirect, splash
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
