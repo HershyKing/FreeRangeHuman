@@ -1,15 +1,36 @@
-<body>
-<h2> Pantry </h2>
-    <ul>
-        {% for ing in pantry %}
-                <li>{{ ing }}</li>
-        {% endfor %}
-    </ul>
+{% extends "theme/dashboard.html" %} {% block content %}
 
-    <h2> Possible Recipes Given Pantry </h2>
-    <ul>
-        {% for recipe in posRecipes %}
-            <li>{{ recipe.recipe_name}}</li>
-        {% endfor %}
-    </ul>
+<body>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Pantry</h4>
+            </div>
+            <hr>
+            <div class="content">
+                <ul>
+                    {% for ing in pantry %}
+                            <li>{{ ing }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Recipes DIY</h4>
+            </div>
+            <hr>
+            <div class="content">
+                <ul>
+                    {% for recipe in posRecipes %}
+                        <li>{{ recipe.recipe_name}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
 </body>
+{% endblock %}

@@ -56,7 +56,7 @@ def dash(request):
         'theme/dashboard.html')
 
 @login_required
-def RecipeView(request):
+def getRecipes(request):
     recipes = Recipe.objects.all()
     return render(request, 'recipes.html', {'recipes': recipes})
 
@@ -93,25 +93,11 @@ def recipe(request, pk):
 @login_required
 def meal_plan(request, pk):
     meal = get_object_or_404(Calendar, id=pk)
-    #Calendar.objects.get(id=pk).meal_plans.aggregate(Sum(''))
-    # meal_plans = Calender.objects.all().values_list('meal_plans__pk', flat=True)
-    # DailyMealPlan.objects.filter(pk__in=meal_plans).values_list('meal1__pk')
     calories = (Calendar.objects.filter(id=pk).values_list('meal_plans__meal1__calories', flat=True)[0] 
         + Calendar.objects.filter(id=pk).values_list('meal_plans__meal2__calories', flat=True)[0]
         + Calendar.objects.filter(id=pk).values_list('meal_plans__meal3__calories', flat=True)[0])
     calGoalDelta = request.user.preferences.calorie_Goal - calories
     return render(request, 'meal.html', {'meal': meal, 'calories': calories, 'calGoalDelta':calGoalDelta})
-
-# class DashView(LoginRequiredMixin, generic.ListView):
-#   # Count of tags and ingredients
-#   num_tags=Tag.objects.all().count()
-#   num_ing = Ingredient.objects.all().count()
-
-#   # Number of visits to this view, as counted in the session variable.
-#   num_visits=request.session.get('num_visits', 0)
-#   request.session['num_visits'] = num_visits+1
-
-#   render( request,'index.html',context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits})
 
 #If clicked signup, else hits first and opens the SignUpForm, when they fill it out via Post then save, clean and scrape preference attributes
 #Then resaves the user
@@ -233,27 +219,6 @@ def add_MealPlan(request):
         'meal_suggestions': meal_suggestions
     })
 
-# def index(request):
-
-#     # Count of tags and ingredients
-#     num_tags = Tag.objects.all().count()
-#     num_ing = Ingredient.objects.all().count()
-
-#     #Last 7 meals
-#     meal_plans = Calendar.objects.filter(user_id=request.user.id).order_by('-meal_plans__date')[:7]
-#     # mp = DailyMealPlan.objects.filter().values_list('sale__pk', flat=True)
-#     # DailyMealPlan.objects.filter(pk__in=lost_sales_id).annotate(Sum('qty'))
-
-
-#     # Number of visits to this view, as counted in the session variable.
-#     num_visits=request.session.get('num_visits', 0)
-#     request.session['num_visits'] = num_visits+1
-
-#     return render(
-#     request,
-#     'index.html',
-#     context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits, 'meal_plans': meal_plans})
-
 def main(request):
 
     # Count of tags and ingredients
@@ -277,7 +242,7 @@ def main(request):
     'main.html',
     context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits, 'meal_plans': meal_plans})
 
-def PantryView(request):
+def getPantry(request):
 
     startdate = datetime.today() - timedelta(days=6)
     enddate = datetime.today()
@@ -298,7 +263,7 @@ def PantryView(request):
     'pantry.html',
     context={'pantry':pantry, 'posRecipes': posRecipes})
 
-def GroceryView(request):
+def getGroceryList(request):
 
     startdate = datetime.today() + timedelta(days=1)
     enddate = startdate + timedelta(days=6)
@@ -343,21 +308,3 @@ def GroceryView(request):
 #     request,
 #     'kitchen.html',
 #     context={'groceries':groceries, 'pantry': pantry, 'posRecipes': posRecipes })
-
-# def PantryRecipes(request):
-#     startdate2 = datetime.today() - timedelta(days=6)
-#     enddate2 = datetime.today()
-#     ingredients2 = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate2,enddate2]).values('meal_plans__meal1__ingredients__ing_name', 'meal_plans__meal2__ingredients__ing_name', 'meal_plans__meal3__ingredients__ing_name')
-
-#     pantry = []
-#     for ing in ingredients2:
-#         for name in ing.values():
-#             if name not in pantry:
-#                 pantry.append(name)
-
-#     posRecipes = Recipe.filter(ingredients__in=pantry)
-
-#     return render(
-#     request,
-#     'kitchen.html',
-#     context={'groceries':groceries, 'pantry': pantry, })
