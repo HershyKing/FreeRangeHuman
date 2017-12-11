@@ -10,7 +10,11 @@
         <div class="content">
             <form method="post">
                 {% csrf_token %} {{ user_form.as_p }} {{ Preferences_form.as_p }}
-                <button class="btn btn-primary" type="submit">Save changes</button>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-primary btn-fill col-md-12" type="submit">Save changes</button>
+                    </div>
+                </div>
             </form>
             <!-- <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
             <div class="footer">

@@ -23,15 +23,75 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('first_name', 'last_name', 'email')
 
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs['class'] = 'form-control'
+        self.fields['last_name'].widget.attrs['class'] = 'form-control'
+        self.fields['email'].widget.attrs['class'] = 'form-control'
+
+        # form-control
+    # def as_p(self):
+    #     return self._html_output(
+    #         normal_row = u'<p%(html_class_attr)s>%(label)s</p><h1>WHAT</h1> %(field)s%(help_text)s',
+    #         error_row = u'%s',
+    #         row_ender = '</p>',
+    #         help_text_html = u' <span class="helptext">%s</span>',
+    #         errors_on_separate_row = True)
+
+    # def __init__(self, *args, **kwargs):
+    #     super(UserForm, self).__init__(*args, **kwargs)
+
+    #     self.helper = FormHelper()
+    #     self.helper.form_action = reverse_lazy('movie_add')
+    #     self.helper.form_method = "POST"
+
+    #     self.helper.layout = layout.Layout(
+    #         layout.Fieldset("Movie data",
+    #             layout.Field("title"),
+    #             layout.Field("year"),
+    #             layout.Div(
+    #                 bootstrap.PrependedText('rating',
+    #                     """<span class="glyphicon glyphicon-thumbs-up"></span>""",
+    #                     css_class="inputblock-level",
+    #                     placeholder="Rating"
+    #                 )
+    #             ),
+    #             bootstrap.FormActions(
+    #                 layout.Submit("submit", "Save", css_class="btn-success"),
+    #             )
+    #         )
+    #     )
+
 class PreferencesForm(forms.ModelForm):
     class Meta:
         model = Preferences
         fields = ('calorie_Goal', 'fat_Goal', 'carb_Goal', 'protein_Goal', 'tags', 'ingredients')
 
+    def __init__(self, *args, **kwargs):
+        super(PreferencesForm, self).__init__(*args, **kwargs)
+        self.fields['calorie_Goal'].widget.attrs['class'] = 'form-control'
+        self.fields['fat_Goal'].widget.attrs['class'] = 'form-control'
+        self.fields['carb_Goal'].widget.attrs['class'] = 'form-control'
+        self.fields['protein_Goal'].widget.attrs['class'] = 'form-control'
+        self.fields['tags'].widget.attrs['class'] = 'form-control'
+        self.fields['ingredients'].widget.attrs['class'] = 'form-control'
+
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
         fields = ('recipe_name', 'calories', 'servings', 'carb', 'fat', 'protein', 'ingredients', 'tags')
+    
+    def __init__(self, *args, **kwargs):
+        super(RecipeForm, self).__init__(*args, **kwargs)
+        self.fields['recipe_name'].widget.attrs['class'] = 'form-control'
+        self.fields['calories'].widget.attrs['class'] = 'form-control'
+        self.fields['servings'].widget.attrs['class'] = 'form-control'
+        self.fields['carb'].widget.attrs['class'] = 'form-control'
+        self.fields['fat'].widget.attrs['class'] = 'form-control'
+        self.fields['protein'].widget.attrs['class'] = 'form-control'
+        self.fields['ingredients'].widget.attrs['class'] = 'form-control'
+        self.fields['tags'].widget.attrs['class'] = 'form-control'
+
 
 class DailyMealPlanForm(forms.ModelForm):
     class Meta:

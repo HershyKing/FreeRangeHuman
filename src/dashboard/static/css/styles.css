@@ -37,3 +37,29 @@
     font-size: 40px;    
     /*background-color: blue;*/
 }
+
+/*.my-form-control {
+    background-color: #482299;
+    border: 1px solid #E3E3E3;
+    border-radius: 4px;
+    color: #565656;
+    padding: 8px 12px;
+    height: 40px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}*/
+
+.form-number-input {
+
+}
+
+li a {
+    line-height: 1.5;
+    font-size: 16px;
+    margin: 0 0 10px;
+    font-weight: 400;
+}
+
+.add-recipe {
+    margin-left: 30px;    
+}

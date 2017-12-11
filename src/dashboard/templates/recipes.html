@@ -2,29 +2,20 @@
 <div class="col-md-4">
     <div class="card">
         <div class="header">
-            <h4 class="title">Recipes</h4>
-            <!-- <p class="category">User preferences to help determine meal plan </p> -->
+            <h4 class="title">Recipe List</h4>
         </div>
         <hr>
         <div class="content">
-            <p><a href="{% url 'add_recipe' %}">Add new</a><br></p>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>Recipe</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for recipe in recipes %}
-          <tr>
-            <td>
-              <a href="{% url 'recipe' recipe.pk %}">{{recipe.recipe_name}}<br>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+            <h4 class="add-recipe"><a href="{% url 'add_recipe' %}">Add new</a></h4>
+            <ul>
+                {% for recipe in recipes %}
+                <li>
+                    <a href="{% url 'recipe' recipe.pk %}">{{recipe.recipe_name}}
+                </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>
 {% endblock %}
+
