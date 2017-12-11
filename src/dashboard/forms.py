@@ -18,6 +18,19 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'calorie_Goal', 'fat_Goal', 'carb_Goal', 'protein_Goal', 'tags', 'ingredients', 'password1', 'password2')
 
+    def __init__(self, *args, **kwargs):
+        super(SignUpForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['class'] = 'form-control'
+        self.fields['calorie_Goal'].widget.attrs['class'] = 'form-control'
+        self.fields['fat_Goal'].widget.attrs['class'] = 'form-control'
+        self.fields['carb_Goal'].widget.attrs['class'] = 'form-control'
+        self.fields['protein_Goal'].widget.attrs['class'] = 'form-control'
+        self.fields['tags'].widget.attrs['class'] = 'form-control'
+        self.fields['ingredients'].widget.attrs['class'] = 'form-control'
+        self.fields['password1'].widget.attrs['class'] = 'form-control'
+        self.fields['password2'].widget.attrs['class'] = 'form-control'
+
+
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
@@ -97,6 +110,12 @@ class DailyMealPlanForm(forms.ModelForm):
     class Meta:
         model = DailyMealPlan
         fields = ('meal1', 'meal2', 'meal3')
+
+    def __init__(self, *args, **kwargs):
+        super(DailyMealPlanForm, self).__init__(*args, **kwargs)
+        self.fields['meal1'].widget.attrs['class'] = 'form-control'
+        self.fields['meal2'].widget.attrs['class'] = 'form-control'
+        self.fields['meal3'].widget.attrs['class'] = 'form-control'
 
 # IngredientFormSet = inlineformset_factory(Recipe, Ingredient)
 # InstructionFormSet = inlineformset_factory(Recipe, Instruction)

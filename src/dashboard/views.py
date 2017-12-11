@@ -104,7 +104,13 @@ def meal_plan(request, pk):
     calories = (Calendar.objects.filter(id=pk).values_list('meal_plans__meal1__calories', flat=True)[0] 
         + Calendar.objects.filter(id=pk).values_list('meal_plans__meal2__calories', flat=True)[0]
         + Calendar.objects.filter(id=pk).values_list('meal_plans__meal3__calories', flat=True)[0])
-    calGoalDelta = request.user.preferences.calorie_Goal - calories
+    
+    if (type(request.user.preferences.calorie_Goal) == 'int'):
+        calGoalDelta = request.user.preferences.calorie_Goal - calories
+    else:
+        calGoalDelta = 2000
+
+    # calGoalDelta = request.user.preferences.calorie_Goal - calories
     return render(request, 'meal.html', {'meal': meal, 'calories': calories, 'calGoalDelta':calGoalDelta})
 
 #If clicked signup, else hits first and opens the SignUpForm, when they fill it out via Post then save, clean and scrape preference attributes
@@ -241,14 +247,37 @@ def main(request):
     meal_plans = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).order_by('-date')
 
 
+    # Get days of week
+    days_this_week = []
+    current_date = datetime.today()
+    days_this_week.append(current_date)
+    for i in range(6):
+        current_date = current_date + timedelta(days=1)
+        days_this_week.append(current_date)
+
+    print('days_this_week', days_this_week)
+    print('meal_plans', meal_plans)
+
+    # for m in meal_plans:
+    #     print('m:', m.date)
+
+    # cal = []
+    # for day in days_this_week:
+    #     temp_date = datetime.today()
+    #     for m in meal_plans:
+    #         if m.date == day.date:
+    #             temp_date = m
+
+
     # Number of visits to this view, as counted in the session variable.
     num_visits=request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits+1
 
+
     return render(
     request,
     'main.html',
-    context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits, 'meal_plans': meal_plans})
+    context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits, 'meal_plans': meal_plans, 'days_this_week':days_this_week})
 
 def getPantry(request):
 

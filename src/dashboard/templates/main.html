@@ -1,5 +1,5 @@
 {% extends "theme/dashboard.html" %} {% block content %}
-<div class="col-md-4">
+<div class="col-md-8">
     <div class="card">
         <div class="header">
             <h4 class="title">Meal Plan Dashboard</h4>
@@ -7,27 +7,32 @@
         </div>
         <hr>
         <div class="content">
-            <p>Welcome to <em>FreeRangeHuman</em>, BE FREE HUMANS. THE EARTH IS FLAT.</p>
-            <table border="1">
-                <thead>
+            <p>Welcome to <em>FreeRangeHuman</em> ! Plan your meals below.</p>
+            <br>
+            <h3>Calendar</h3>
+            <div class="content table-responsive table-full-width">
+                <table class="table table-hover">
+                    
+                    <tbody>
                     <tr>
-                        <th>Weekly Meal Plan</th>
+                        {% for day in days_this_week %}
+                            <td>
+                                {% for meal_plan in meal_plans %}
+                                {% if meal_plan.date == day.date %}
+                                <a href="{% url 'meal_plan' meal_plan.pk %}">{{meal_plan.date}}<br></a>
+                                {% else %}
+                                {{day.date}}
+                                {% endif %}
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
                     </tr>
-                </thead>
-                <tbody>
-                    {% for meal_plan in meal_plans %}
-                    <tr>
-                        <td>
-                            <a href="{% url 'meal_plan' meal_plan.pk %}">{{meal_plan.date}}<br></a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <p><a href="{% url 'add_mealplan'%}">Add New Daily Meal</a>
-                <br>
-            </p>
-            
+                    </tbody>
+                </table>
+            </div>
+            <h3>
+                <a href="{% url 'add_mealplan'%}">Add New Daily Meal</a>
+            </h3>
         </div>
     </div>
 </div>
@@ -41,8 +46,8 @@
         <div class="content">
             <h4>The kitchen has the following counts:</h4>
             <ul>
-                <li><strong>TAGS:</strong> {{ num_tags }}</li>
-                <li><strong>INGREDIENTS:</strong> {{ num_ing }}</li>
+                <li><strong>TAGS:</strong> {{ num_tags }} </li>
+                <li><strong>INGREDIENTS:</strong> {{ num_ing }} </li>
             </ul>
             <p>You have visited this page {{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
         </div>

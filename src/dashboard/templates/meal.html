@@ -1,6 +1,7 @@
 {% extends "theme/dashboard.html" %} {% block content %}
+
 <head>
-  <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5a2dd3e08c8f3c0013a02123&product=inline-share-buttons"></script>
+    <script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5a2dd3e08c8f3c0013a02123&product=inline-share-buttons"></script>
 </head>
 <div class="col-md-4">
     <div class="card">
@@ -10,39 +11,30 @@
         </div>
         <hr>
         <div class="content">
-            <p> Meals</p>
+            <form action="{% url 'update_meal' meal.meal_plans.meal_plan_id %}">
+                <div class="col-md-12">
+                    <input class="btn btn-primary btn-fill col-md-12" type="submit" value="Update Meal Plan">
+                </div>
+                <!-- <input type="submit" value="Go To Update"> -->
+            </form>
+            <br>
+            <br>
+            <h2>Meals</h2>
             <ol>
-              <li>
-                <a href="{% url 'recipe' meal.meal_plans.meal1.pk %}">{{ meal.meal_plans.meal1.recipe_name }}</a>
-              </li>
-              <li>
-                <a href="{% url 'recipe' meal.meal_plans.meal2.pk %}">{{ meal.meal_plans.meal2.recipe_name }}</a>
-              </li>
-              <li>
-                <a href="{% url 'recipe' meal.meal_plans.meal3.pk %}">{{ meal.meal_plans.meal3.recipe_name }}</a>
-              </li>
+                <li>
+                    <a href="{% url 'recipe' meal.meal_plans.meal1.pk %}">{{ meal.meal_plans.meal1.recipe_name }}</a>
+                </li>
+                <li>
+                    <a href="{% url 'recipe' meal.meal_plans.meal2.pk %}">{{ meal.meal_plans.meal2.recipe_name }}</a>
+                </li>
+                <li>
+                    <a href="{% url 'recipe' meal.meal_plans.meal3.pk %}">{{ meal.meal_plans.meal3.recipe_name }}</a>
+                </li>
             </ol>
             <p> Meal Calories: {{calories}} </p>
             <p> Calorie Goal: {{calGoalDelta}} </p>
             <div class="sharethis-inline-share-buttons"></div>
         </div>
     </div>
-</div>
-
-<div class="col-md-4">
-  <div class="card">
-    <div class="header">
-      <h4 class="title"> Update Meal Plan</h4>
-    </div>
-    <hr>
-    
-    <div class="content">
-      <td>
-        <form action="{% url 'update_meal' meal.meal_plans.meal_plan_id %}">
-          <input type="submit" value="Go To Update">
-        </form>
-      </td>
-    </div>
-  </div>
 </div>
 {% endblock %}
