@@ -111,6 +111,12 @@ class DailyMealPlanForm(forms.ModelForm):
         model = DailyMealPlan
         fields = ('meal1', 'meal2', 'meal3')
 
+    def __init__(self, *args, **kwargs):
+        super(DailyMealPlanForm, self).__init__(*args, **kwargs)
+        self.fields['meal1'].widget.attrs['class'] = 'form-control'
+        self.fields['meal2'].widget.attrs['class'] = 'form-control'
+        self.fields['meal3'].widget.attrs['class'] = 'form-control'
+
 # IngredientFormSet = inlineformset_factory(Recipe, Ingredient)
 # InstructionFormSet = inlineformset_factory(Recipe, Instruction)
 # TagFormSet = inlineformset_factory(Recipe, Tag)
