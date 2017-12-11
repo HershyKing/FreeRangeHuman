@@ -16,6 +16,7 @@ from datetime import datetime, timedelta, date
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models import Sum
+import random
 
 redirectUrl = '../../dashboard'
 
@@ -185,6 +186,31 @@ def add_recipe(request):
 
 @login_required
 def add_MealPlan(request):
+    calorie_base = random.randint(300,900)
+    #calorie_base = random.randint(0,0)
+    calorie_start =  calorie_base - 200
+    calorie_end = calorie_base + 200
+
+    fat_base = random.randint(10, 30)
+    #fat_base = random.randint(0, 0)
+    fat_start = fat_base - 10
+    fat_end = fat_base + 10
+
+    carb_base = random.randint(10, 30)
+    #carb_base = random.randint(0, 0)
+    carb_start = carb_base - 10
+    carb_end = carb_base + 10
+
+    protein_base = random.randint(10, 30)
+    #protein_base = random.randint(0, 0)
+    protein_start = protein_base - 10
+    protein_end = protein_base + 10
+
+    rec_suggestions = Recipe.objects.filter(calories__range=[calorie_start, calorie_end], fat__range=[fat_start, fat_end], carb__range=[carb_start,carb_end], protein__range=[protein_start,protein_end])[:5]
+
+    AllMeals = DailyMealPlan.objects.all()
+    meal_suggestions = random.choice(AllMeals)
+
     if request.method == 'POST':
         meal_plan = DailyMealPlanForm(request.POST)
         Calendar_date = CalendarForm(request.POST)
@@ -203,6 +229,8 @@ def add_MealPlan(request):
     return render(request, 'meal_plan.html', context={
         'meal_plan': meal_plan,
         'Calendar_date': Calendar_date,
+        'suggestions': rec_suggestions,
+        'meal_suggestions': meal_suggestions
     })
 
 # def index(request):
