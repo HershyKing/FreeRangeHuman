@@ -6,12 +6,29 @@
             <!-- <p class="category">User preferences to help determine meal plan </p> -->
         </div>
         <hr>
-        <div class="content">
+       <!--  <div class="content">
             <form method="post">
-                {% csrf_token %} {{ user_form.as_p }} {{ Preferences_form.as_p }}
+                 {{ user_form.as_p }} {{ Preferences_form.as_p }}
+                <button type="submit">Save changes</button>
+            </form>
+        </div> -->
+        <div class="content">
+            <form method="post"> {% csrf_token %}
+                <div class="row">
+                    {{ user_form.as_p }}
+                </div>
+                <div class="row">
+                    {{ Preferences_form.as_p }}
+                </div>
                 <button type="submit">Save changes</button>
             </form>
         </div>
     </div>
 </div>
 {% endblock %}
+                    <!-- <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" placeholder="Email">
+                        </div>
+                    </div> -->

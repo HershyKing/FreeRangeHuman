@@ -3,23 +3,20 @@
     <div class="card">
         <div class="header">
             <h4 class="title">Tag List</h4>
-            <!-- <p class="category">User preferences to help determine meal plan </p> -->
         </div>
         <hr>
         <div class="content">
             {% if tag_list %}
-    <ul>
-
-      {% for tag in tag_list %}
-      <li>
-        <p>{{ tag.tag_name }}</p>
-      </li>
-      {% endfor %}
-
-    </ul>
-    {% else %}
-      <p>There are no Tags to classify your food. Like how there is no god.</p>
-    {% endif %}
+            <ul>
+                {% for tag in tag_list %}
+                <li>
+                    <p>{{ tag.tag_name }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>There are no Tags to classify your food. Like how there is no god.</p>
+            {% endif %}
         </div>
     </div>
 </div>
