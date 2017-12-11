@@ -21,10 +21,10 @@ redirectUrl = '../../dashboard'
 
 # Create your views here.
 class TagListView(LoginRequiredMixin, generic.ListView):
-	model = Tag
+    model = Tag
 
 class IngredientListView(LoginRequiredMixin, generic.ListView):
-	model = Ingredient	
+    model = Ingredient  
 
 def splash(request):
     # Count of tags and ingredients
@@ -102,15 +102,15 @@ def meal_plan(request, pk):
     return render(request, 'meal.html', {'meal': meal, 'calories': calories, 'calGoalDelta':calGoalDelta})
 
 # class DashView(LoginRequiredMixin, generic.ListView):
-# 	# Count of tags and ingredients
-# 	num_tags=Tag.objects.all().count()
-# 	num_ing = Ingredient.objects.all().count()
+#   # Count of tags and ingredients
+#   num_tags=Tag.objects.all().count()
+#   num_ing = Ingredient.objects.all().count()
 
-# 	# Number of visits to this view, as counted in the session variable.
-# 	num_visits=request.session.get('num_visits', 0)
-# 	request.session['num_visits'] = num_visits+1
+#   # Number of visits to this view, as counted in the session variable.
+#   num_visits=request.session.get('num_visits', 0)
+#   request.session['num_visits'] = num_visits+1
 
-# 	render(	request,'index.html',context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits})
+#   render( request,'index.html',context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits})
 
 #If clicked signup, else hits first and opens the SignUpForm, when they fill it out via Post then save, clean and scrape preference attributes
 #Then resaves the user
@@ -306,7 +306,27 @@ def KitchenView(request):
             if name not in pantry:
                 pantry.append(name)
 
+    posRecipes = Recipe.objects.filter(ingredients__ing_name__in=pantry).distinct()
+
     return render(
     request,
     'kitchen.html',
-    context={'groceries':groceries, 'pantry': pantry, })
+    context={'groceries':groceries, 'pantry': pantry, 'posRecipes': posRecipes })
+
+# def PantryRecipes(request):
+#     startdate2 = datetime.today() - timedelta(days=6)
+#     enddate2 = datetime.today()
+#     ingredients2 = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate2,enddate2]).values('meal_plans__meal1__ingredients__ing_name', 'meal_plans__meal2__ingredients__ing_name', 'meal_plans__meal3__ingredients__ing_name')
+
+#     pantry = []
+#     for ing in ingredients2:
+#         for name in ing.values():
+#             if name not in pantry:
+#                 pantry.append(name)
+
+#     posRecipes = Recipe.filter(ingredients__in=pantry)
+
+#     return render(
+#     request,
+#     'kitchen.html',
+#     context={'groceries':groceries, 'pantry': pantry, })
