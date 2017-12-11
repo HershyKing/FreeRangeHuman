@@ -64,7 +64,7 @@ class Instruction(models.Model):
 	# Fields
 	instruct_id = models.AutoField(primary_key=True)
 	step_num = models.IntegerField()
-	instruction = models.CharField(max_length=100)
+	instruction = models.CharField(max_length=5000)
 	
 	# Foreign key
 	recipe_id = models.ForeignKey('Recipe', on_delete=models.CASCADE)

@@ -16,15 +16,16 @@ from datetime import datetime, timedelta, date
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models import Sum
+import random
 
 redirectUrl = '../../dashboard'
 
 # Create your views here.
 class TagListView(LoginRequiredMixin, generic.ListView):
-	model = Tag
+    model = Tag
 
 class IngredientListView(LoginRequiredMixin, generic.ListView):
-	model = Ingredient	
+    model = Ingredient  
 
 def splash(request):
     # Count of tags and ingredients
@@ -102,15 +103,15 @@ def meal_plan(request, pk):
     return render(request, 'meal.html', {'meal': meal, 'calories': calories, 'calGoalDelta':calGoalDelta})
 
 # class DashView(LoginRequiredMixin, generic.ListView):
-# 	# Count of tags and ingredients
-# 	num_tags=Tag.objects.all().count()
-# 	num_ing = Ingredient.objects.all().count()
+#   # Count of tags and ingredients
+#   num_tags=Tag.objects.all().count()
+#   num_ing = Ingredient.objects.all().count()
 
-# 	# Number of visits to this view, as counted in the session variable.
-# 	num_visits=request.session.get('num_visits', 0)
-# 	request.session['num_visits'] = num_visits+1
+#   # Number of visits to this view, as counted in the session variable.
+#   num_visits=request.session.get('num_visits', 0)
+#   request.session['num_visits'] = num_visits+1
 
-# 	render(	request,'index.html',context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits})
+#   render( request,'index.html',context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits})
 
 #If clicked signup, else hits first and opens the SignUpForm, when they fill it out via Post then save, clean and scrape preference attributes
 #Then resaves the user
@@ -185,6 +186,31 @@ def add_recipe(request):
 
 @login_required
 def add_MealPlan(request):
+    calorie_base = random.randint(300,900)
+    #calorie_base = random.randint(0,0)
+    calorie_start =  calorie_base - 200
+    calorie_end = calorie_base + 200
+
+    fat_base = random.randint(10, 30)
+    #fat_base = random.randint(0, 0)
+    fat_start = fat_base - 10
+    fat_end = fat_base + 10
+
+    carb_base = random.randint(10, 30)
+    #carb_base = random.randint(0, 0)
+    carb_start = carb_base - 10
+    carb_end = carb_base + 10
+
+    protein_base = random.randint(10, 30)
+    #protein_base = random.randint(0, 0)
+    protein_start = protein_base - 10
+    protein_end = protein_base + 10
+
+    rec_suggestions = Recipe.objects.filter(calories__range=[calorie_start, calorie_end], fat__range=[fat_start, fat_end], carb__range=[carb_start,carb_end], protein__range=[protein_start,protein_end])[:5]
+
+    AllMeals = DailyMealPlan.objects.all()
+    meal_suggestions = random.choice(AllMeals)
+
     if request.method == 'POST':
         meal_plan = DailyMealPlanForm(request.POST)
         Calendar_date = CalendarForm(request.POST)
@@ -203,6 +229,8 @@ def add_MealPlan(request):
     return render(request, 'meal_plan.html', context={
         'meal_plan': meal_plan,
         'Calendar_date': Calendar_date,
+        'suggestions': rec_suggestions,
+        'meal_suggestions': meal_suggestions
     })
 
 # def index(request):
@@ -306,7 +334,27 @@ def KitchenView(request):
             if name not in pantry:
                 pantry.append(name)
 
+    posRecipes = Recipe.objects.filter(ingredients__ing_name__in=pantry).distinct()
+
     return render(
     request,
     'kitchen.html',
-    context={'groceries':groceries, 'pantry': pantry, })
+    context={'groceries':groceries, 'pantry': pantry, 'posRecipes': posRecipes })
+
+# def PantryRecipes(request):
+#     startdate2 = datetime.today() - timedelta(days=6)
+#     enddate2 = datetime.today()
+#     ingredients2 = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate2,enddate2]).values('meal_plans__meal1__ingredients__ing_name', 'meal_plans__meal2__ingredients__ing_name', 'meal_plans__meal3__ingredients__ing_name')
+
+#     pantry = []
+#     for ing in ingredients2:
+#         for name in ing.values():
+#             if name not in pantry:
+#                 pantry.append(name)
+
+#     posRecipes = Recipe.filter(ingredients__in=pantry)
+
+#     return render(
+#     request,
+#     'kitchen.html',
+#     context={'groceries':groceries, 'pantry': pantry, })

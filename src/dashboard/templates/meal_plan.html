@@ -7,7 +7,7 @@
         </div>
         <hr>
         <div class="content">
-            <form method="post">
+<form method="post">
   {% csrf_token %}
   {{ Calendar_date.as_p }}
   {{ meal_plan.as_p }}
@@ -16,5 +16,36 @@
         </div>
     </div>
 </div>
+<div class="col-md-4">
+    <div class="card">
+        <div class="header">
+            <h4 class="title">Recipe Suggestions</h4>
+            <!-- <p class="category">User preferences to help determine meal plan </p> -->
+        </div>
+        <hr>
+        <div class="recipe_suggestion">
+  <ul>
+        {% for suggestion in suggestions %}
+            <li>{{ suggestion.recipe_name }}</li>
+        {% endfor %}
+  </ul>
+        </div>
+      </div>
+    </div>
+<div class="col-md-4">
+    <div class="card">
+        <div class="header">
+            <h4 class="title">Meal Suggestion</h4>
+            <!-- <p class="category">User preferences to help determine meal plan </p> -->
+        </div>
+        <hr>
+        <div class="meal_suggestion">
+            <p></p>Meal 1: {{ meal_suggestions.meal1.recipe_name }}</p>
+            <p></p>Meal 2: {{ meal_suggestions.meal2.recipe_name }}</p>
+            <p></p>Meal 3: {{ meal_suggestions.meal3.recipe_name }}</p>
+        </div>
+      </div>
+    </div>
+
 {% endblock %}
 
