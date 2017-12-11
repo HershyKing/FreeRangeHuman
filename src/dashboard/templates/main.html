@@ -1,5 +1,5 @@
 {% extends "theme/dashboard.html" %} {% block content %}
-<div class="col-md-4">
+<div class="col-md-8">
     <div class="card">
         <div class="header">
             <h4 class="title">Meal Plan Dashboard</h4>
@@ -8,20 +8,23 @@
         <hr>
         <div class="content">
             <p>Welcome to <em>FreeRangeHuman</em>, BE FREE HUMANS. THE EARTH IS FLAT.</p>
+
+            {% for d in days_this_week %}
+            <p>{{d.date}}</p>
+            {% endfor %}
+
             <table border="1">
-                <thead>
-                    <tr>
-                        <th>Weekly Meal Plan</th>
-                    </tr>
-                </thead>
                 <tbody>
-                    {% for meal_plan in meal_plans %}
                     <tr>
-                        <td>
+                    {% for meal_plan in meal_plans %}
+                    <td>
                             <a href="{% url 'meal_plan' meal_plan.pk %}">{{meal_plan.date}}<br></a>
-                        </td>
-                    </tr>
+                    </td>
                     {% endfor %}
+                    </tr>
+
+
+
                 </tbody>
             </table>
             <p><a href="{% url 'add_mealplan'%}">Add New Daily Meal</a>

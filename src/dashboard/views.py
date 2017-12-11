@@ -265,9 +265,21 @@ def main(request):
     startdate = datetime.today()
     #enddate = datetime.today() + timedelta(days=3)
     enddate = datetime.today() + timedelta(days=6)
-    meal_plans = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).order_by('-date')
+    meal_plans = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).order_by('-date').reverse()
 
+    dates =  Calendar.objects.filter(date__range=[startdate,enddate]).order_by('-date').reverse()
 
+    days_this_week = []
+    current_date = datetime.today()
+    days_this_week.append(current_date)
+    for i in range(6):
+        current_date = current_date + timedelta(days=1)
+        days_this_week.append(current_date)
+
+    print('days_this_week', days_this_week)
+    print('meal_plans', meal_plans)
+
+    print("dates", dates)
     # Number of visits to this view, as counted in the session variable.
     num_visits=request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits+1
@@ -275,7 +287,7 @@ def main(request):
     return render(
     request,
     'main.html',
-    context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits, 'meal_plans': meal_plans})
+    context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits, 'meal_plans': meal_plans, 'days_this_week': days_this_week})
 
 # def PantryView(request):
 
