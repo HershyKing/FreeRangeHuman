@@ -1,0 +1,17 @@
+{% extends "theme/dashboard.html" %} {% block content %}
+<body>
+	<div class="col-md-4">
+    	<div class="card">
+        	<div class="header">
+            	<h4 class="title">Update Meal Plan</h4>
+        	</div>
+        	<div class="content">
+        		<form action="" method="post">{% csrf_token %}
+				    {{ form.as_p }}
+				    <input type="submit" value="Update" />
+				</form>
+        	</div>
+        </div>
+	</div>
+</body>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "theme/dashboard.html" %} {% block content %}
+<body>
+	<div class="col-md-4">
+    	<div class="card">
+        	<div class="header">
+            	<h4 class="title">Grocery List</h4>
+        	</div>
+        	<hr>
+        	<div class="content">
+        	    <ul>
+        			{% for ing in groceries %}
+            		<a href="https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Damazonfresh&field-keywords={{ing}}">
+                		<li>{{ ing }}</li>
+            		</a>
+        			{% endfor %}
+    			</ul>
+    		</div>
+    	</div>
+	</div>
+</body>
+{% endblock %}

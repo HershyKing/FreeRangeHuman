@@ -1,0 +1,36 @@
+{% extends "theme/dashboard.html" %} {% block content %}
+
+<body>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Pantry</h4>
+            </div>
+            <hr>
+            <div class="content">
+                <ul>
+                    {% for ing in pantry %}
+                            <li>{{ ing }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Recipes DIY</h4>
+            </div>
+            <hr>
+            <div class="content">
+                <ul>
+                    {% for recipe in posRecipes %}
+                        <li>{{ recipe.recipe_name}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}
