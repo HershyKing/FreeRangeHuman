@@ -17,8 +17,16 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models import Sum
 import random
+from django.views.generic.edit import UpdateView
 
 redirectUrl = '../../dashboard'
+
+# Create your views here.
+class MealPlanUpdate(UpdateView):
+    model = DailyMealPlan
+    fields = ['meal1', 'meal2', 'meal3',]
+    template_name_suffix = '_update_form'
+    success_url = '../../../dashboard'
 
 # Create your views here.
 class TagListView(LoginRequiredMixin, generic.ListView):

@@ -15,7 +15,7 @@ urlpatterns = [
 	url(r'^pref', views.pref, name='pref'),
 	url(r'^dash', views.main, name='main'),
 	url(r'^$', views.main, name='main'),
-	 url(r'pantry', views.getPantry, name='pantry'),
-	 url(r'groceries', views.getGroceryList, name='groceries')
-
+	url(r'pantry', views.getPantry, name='pantry'),
+	url(r'groceries', views.getGroceryList, name='groceries'),
+	url(r'^update_meal/(?P<pk>\d+)/$', views.MealPlanUpdate.as_view(), name='update_meal')
 ]
