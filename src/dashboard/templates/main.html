@@ -12,21 +12,15 @@
             <h3>Calendar</h3>
             <div class="content table-responsive table-full-width">
                 <table class="table table-hover">
-                    
                     <tbody>
-                    <tr>
-                        {% for day in days_this_week %}
+                        <tr>
+                            {% for day in days_this_week %}
                             <td>
-                                {% for meal_plan in meal_plans %}
-                                {% if meal_plan.date == day.date %}
-                                <a href="{% url 'meal_plan' meal_plan.pk %}">{{meal_plan.date}}<br></a>
-                                {% else %}
-                                {{day.date}}
-                                {% endif %}
-                                {% endfor %}
+                                {% for meal_plan in meal_plans %} {% if meal_plan.date == day.date %}
+                                <a href="{% url 'meal_plan' meal_plan.pk %}">{{meal_plan.date}}<br></a> {% endif %} {% endfor %}
                             </td>
-                        {% endfor %}
-                    </tr>
+                            {% endfor %}
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -53,5 +47,4 @@
         </div>
     </div>
 </div>
-
 {% endblock %}

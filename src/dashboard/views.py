@@ -186,22 +186,22 @@ def add_recipe(request):
 
 @login_required
 def add_MealPlan(request):
-    calorie_base = random.randint(300,900)
+    calorie_base = random.randint(200,250)
     #calorie_base = random.randint(0,0)
     calorie_start =  calorie_base - 200
     calorie_end = calorie_base + 200
 
-    fat_base = random.randint(10, 30)
+    fat_base = random.randint(10, 10)
     #fat_base = random.randint(0, 0)
     fat_start = fat_base - 10
     fat_end = fat_base + 10
 
-    carb_base = random.randint(10, 30)
+    carb_base = random.randint(10, 10)
     #carb_base = random.randint(0, 0)
     carb_start = carb_base - 10
     carb_end = carb_base + 10
 
-    protein_base = random.randint(10, 30)
+    protein_base = random.randint(10, 10)
     #protein_base = random.randint(0, 0)
     protein_start = protein_base - 10
     protein_end = protein_base + 10
@@ -257,6 +257,12 @@ def main(request):
 
     print('days_this_week', days_this_week)
     print('meal_plans', meal_plans)
+
+    # dates= Calendar.filter(user__id=request.user.id)
+
+    # cal = []
+    # for day in days_this_week:
+    #     for mp in meal_plans:
 
     # for m in meal_plans:
     #     print('m:', m.date)

@@ -77,6 +77,14 @@
                                 </table>
                             </div>
 
+                            <h4 class="title">Ingredients</h4>
+                            <ul>
+                                {% for tag in recipe.ingredients.all %}
+                                <li>{{ tag.ing_name }}</li>
+                                {% endfor %}
+                            </ul>
+
+
                             <h4 class="title">Tags</h4>
                             <ul>
                                 {% for tag in recipe.tags.all %}
