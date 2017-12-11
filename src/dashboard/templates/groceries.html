@@ -1,0 +1,10 @@
+<body>
+    <h2> Groceries </h2>
+    <ul>
+        {% for ing in groceries %}
+            <a href="https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Damazonfresh&field-keywords={{ing}}">
+                <li>{{ ing }}</li>
+            </a>
+        {% endfor %}
+    </ul>
+</body>

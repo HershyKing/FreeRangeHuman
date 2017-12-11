@@ -1,0 +1,15 @@
+<body>
+<h2> Pantry </h2>
+    <ul>
+        {% for ing in pantry %}
+                <li>{{ ing }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2> Possible Recipes Given Pantry </h2>
+    <ul>
+        {% for recipe in posRecipes %}
+            <li>{{ recipe.recipe_name}}</li>
+        {% endfor %}
+    </ul>
+</body>

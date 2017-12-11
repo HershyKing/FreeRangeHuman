@@ -277,69 +277,72 @@ def main(request):
     'main.html',
     context={'num_tags':num_tags, 'num_ing':num_ing, 'num_visits':num_visits, 'meal_plans': meal_plans})
 
-# def PantryView(request):
+def PantryView(request):
 
-#     startdate = datetime.today() - timedelta(days=6)
-#     enddate = datetime.today()
-#     ingredients = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).values('meal_plans__meal1__ingredients__ing_name', 'meal_plans__meal2__ingredients__ing_name', 'meal_plans__meal3__ingredients__ing_name')
-#     #ingredients = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).values('meal_plans__meal1')
-
-#     ingredient = []
-#     for ing in ingredients:
-#         for name in ing.values():
-#             if name not in ingredient:
-#                 ingredient.append(name)
-
-#     return render(
-#     request,
-#     'pantry.html',
-#     context={'ingredients':ingredient, })
-
-# def GroceryView(request):
-
-#     startdate = datetime.today() + timedelta(days=1)
-#     enddate = startdate + timedelta(days=6)
-#     ingredients = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).values('meal_plans__meal1__ingredients__ing_name', 'meal_plans__meal2__ingredients__ing_name', 'meal_plans__meal3__ingredients__ing_name')
-#     #ingredients = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).values('meal_plans__meal1')
-
-#     ingredient = []
-#     for ing in ingredients:
-#         for name in ing.values():
-#             if name not in ingredient:
-#                 ingredient.append(name)
-
-#     return render(
-#     request,
-#     'grocery.html',
-#     context={'ingredients':ingredient, })
-
-def KitchenView(request):
-    startdate1 = datetime.today() + timedelta(days=1)
-    enddate1 = startdate1 + timedelta(days=6)
-    ingredients1 = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate1,enddate1]).values('meal_plans__meal1__ingredients__ing_name', 'meal_plans__meal2__ingredients__ing_name', 'meal_plans__meal3__ingredients__ing_name')
-
-    groceries = []
-    for ing in ingredients1:
-        for name in ing.values():
-            if name not in groceries:
-                groceries.append(name)
-
-    startdate2 = datetime.today() - timedelta(days=6)
-    enddate2 = datetime.today()
-    ingredients2 = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate2,enddate2]).values('meal_plans__meal1__ingredients__ing_name', 'meal_plans__meal2__ingredients__ing_name', 'meal_plans__meal3__ingredients__ing_name')
+    startdate = datetime.today() - timedelta(days=6)
+    enddate = datetime.today()
+    ingredients = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).values('meal_plans__meal1__ingredients__ing_name', 'meal_plans__meal2__ingredients__ing_name', 'meal_plans__meal3__ingredients__ing_name')
+    #ingredients = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).values('meal_plans__meal1')
 
     pantry = []
-    for ing in ingredients2:
+    for ing in ingredients:
         for name in ing.values():
             if name not in pantry:
                 pantry.append(name)
 
     posRecipes = Recipe.objects.filter(ingredients__ing_name__in=pantry).distinct()
 
+
     return render(
     request,
-    'kitchen.html',
-    context={'groceries':groceries, 'pantry': pantry, 'posRecipes': posRecipes })
+    'pantry.html',
+    context={'pantry':pantry, 'posRecipes': posRecipes})
+
+def GroceryView(request):
+
+    startdate = datetime.today() + timedelta(days=1)
+    enddate = startdate + timedelta(days=6)
+    ingredients = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).values('meal_plans__meal1__ingredients__ing_name', 'meal_plans__meal2__ingredients__ing_name', 'meal_plans__meal3__ingredients__ing_name')
+     #ingredients = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate,enddate]).values('meal_plans__meal1')
+
+    groceries = []
+    for ing in ingredients:
+        for name in ing.values():
+            if name not in groceries:
+                groceries.append(name)
+
+    return render(
+    request,
+    'groceries.html',
+    context={'groceries':groceries, })
+
+# def KitchenView(request):
+#     startdate1 = datetime.today() + timedelta(days=1)
+#     enddate1 = startdate1 + timedelta(days=6)
+#     ingredients1 = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate1,enddate1]).values('meal_plans__meal1__ingredients__ing_name', 'meal_plans__meal2__ingredients__ing_name', 'meal_plans__meal3__ingredients__ing_name')
+
+#     groceries = []
+#     for ing in ingredients1:
+#         for name in ing.values():
+#             if name not in groceries:
+#                 groceries.append(name)
+
+#     startdate2 = datetime.today() - timedelta(days=6)
+#     enddate2 = datetime.today()
+#     ingredients2 = Calendar.objects.filter(user__id=request.user.id).filter(date__range=[startdate2,enddate2]).values('meal_plans__meal1__ingredients__ing_name', 'meal_plans__meal2__ingredients__ing_name', 'meal_plans__meal3__ingredients__ing_name')
+
+#     pantry = []
+#     for ing in ingredients2:
+#         for name in ing.values():
+#             if name not in pantry:
+#                 pantry.append(name)
+
+#     posRecipes = Recipe.objects.filter(ingredients__ing_name__in=pantry).distinct()
+
+#     return render(
+#     request,
+#     'kitchen.html',
+#     context={'groceries':groceries, 'pantry': pantry, 'posRecipes': posRecipes })
 
 # def PantryRecipes(request):
 #     startdate2 = datetime.today() - timedelta(days=6)
