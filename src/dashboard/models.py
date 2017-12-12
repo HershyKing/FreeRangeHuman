@@ -63,7 +63,7 @@ class Recipe(models.Model):
 class Instruction(models.Model):
 	# Fields
 	instruct_id = models.AutoField(primary_key=True)
-	step_num = models.IntegerField()
+	# step_num = models.IntegerField()
 	instruction = models.CharField(max_length=5000)
 	
 	# Foreign key

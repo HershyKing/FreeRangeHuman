@@ -108,7 +108,7 @@ def meal_plan(request, pk):
     if (type(request.user.preferences.calorie_Goal) == 'int'):
         calGoalDelta = request.user.preferences.calorie_Goal - calories
     else:
-        calGoalDelta = 2000
+        calGoalDelta = 2000 - calories
 
     # calGoalDelta = request.user.preferences.calorie_Goal - calories
     return render(request, 'meal.html', {'meal': meal, 'calories': calories, 'calGoalDelta':calGoalDelta})
@@ -167,21 +167,21 @@ def update_preferences(request):
 def add_recipe(request):
     if request.method == 'POST':
         recipe_form = RecipeForm(request.POST)
-        #instructions_form = InstructionsForm(request.POST)
-        if recipe_form.is_valid(): 
-        #and instructions_form.is_valid():
+        # instructions_form = InstructionsForm(request.POST)
+        if recipe_form.is_valid():
+        # if recipe_form.is_valid() and instructions_form.is_valid():
             recipe_form.save()
-        #    instructions_form.save()
+            # instructions_form.save()
             messages.success(request, 'Your recipe was successfully updated!')
             return redirect(redirectUrl)
         else:
             messages.error(request, 'Please correct the error below.')
     else:
         recipe_form = RecipeForm()
-    #    instructions_form = InstructionsForm(request.POST)
+        # instructions_form = InstructionsForm()
     return render(request, 'recipe_form.html', context={
         'recipe_form': recipe_form,
-    #    'instructions_form': instructions_form
+        # 'instructions_form': instructions_form
     })
 
 @login_required

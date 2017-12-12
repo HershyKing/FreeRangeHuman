@@ -36,3 +36,9 @@ python manage.py runserver
 ```
 Use this when in FreeRangeHuman/src directory to start server.
 Then go to http://localhost:8000/ to verify django is working!
+
+
+Run tests:
+```python
+python manage.py test
+```
