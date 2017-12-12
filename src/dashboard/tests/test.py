@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.urls import resolve
 from django.test import TestCase
-from dashboard.views import main, signup, update_preferences, TagListView, IngredientListView, RecipeView, recipe, add_recipe
+from dashboard.views import main, signup, update_preferences, TagListView, IngredientListView, getRecipes, recipe, add_recipe
 from django.test import Client
 from dashboard.forms import *   # import all forms
 from dashboard.models import Recipe, Tag, Ingredient
@@ -108,7 +108,7 @@ class RecipesTest(TestCase):
 
 	def test_recipe_url_resolves_recipe_view(self):
 		view = resolve('/dashboard/recipes')
-		self.assertEquals(view.func, RecipeView)
+		self.assertEquals(view.func, getRecipes)
 
 class RecipeTests(TestCase):
 	def setUp(self):

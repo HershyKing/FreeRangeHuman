@@ -124,7 +124,7 @@ class DailyMealPlanForm(forms.ModelForm):
 class InstructionsForm(forms.ModelForm):
     class Meta:
         model = Instruction
-        fields = ('step_num', 'instruction')
+        fields = ('instruction',)
 
 class CalendarForm(forms.ModelForm):
     class Meta:
